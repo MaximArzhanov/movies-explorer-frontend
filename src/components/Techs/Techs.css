@@ -52,7 +52,7 @@
 }
 
 .techs__item {
-    margin: auto;
+    margin: 0;
     padding: 21px 0;
     width: 90px;
     height: 60px;
@@ -60,4 +60,8 @@
     border-radius: 10px;
     text-align: center;
     box-sizing: border-box;
+}
+
+.techs__item:last-of-type {
+    margin-right: auto;
 }
