@@ -5,6 +5,7 @@ import Promo from '../Promo/Promo';
 import Footer from '../Footer/Footer';
 import AboutProject from '../AboutProject/AboutProject';
 import Techs from '../Techs/Techs';
+import AboutMe from '../AboutMe/AboutMe';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Promo />
       <AboutProject />
       <Techs />
+      <AboutMe />
       <Footer />
     </div>
   );

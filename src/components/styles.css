@@ -11,3 +11,15 @@
     color: #fff;
     border-bottom: 1px solid #dadada;
 }
+
+.section-paragraph {
+    margin: 0;
+    margin-top: 25px;
+    padding: 0;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 22px;
+    color: #fff;
+}
