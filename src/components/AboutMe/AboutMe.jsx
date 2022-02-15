@@ -20,12 +20,12 @@ function AboutMe() {
             В&nbsp;свободное время люблю смотреть кино, гулять и играть в настольные игры.
           </p>
           <ul className="about-me__contacts">
-            <li className="about-me__github">
+            <li className="about-me__item">
               <a href="https://github.com/MaximArzhanov"
                 target="_blank" rel="noreferrer"
                 className="about-me__link">GitHub</a>
             </li>
-            <li className="about-me__telegram">
+            <li className="about-me__item">
               <a href="https://t.me/MaximArzhanov"
                 target="_blank" rel="noreferrer"
                 className="about-me__link">Telegram</a>
