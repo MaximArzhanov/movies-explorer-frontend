@@ -1,0 +1,13 @@
+.section-title {
+    margin: 0;
+    padding: 0;
+    padding-bottom: 25px;
+    width: 100%;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 22px;
+    line-height: 27px;
+    color: #fff;
+    border-bottom: 1px solid #dadada;
+}
