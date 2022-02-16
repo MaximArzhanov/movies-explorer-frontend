@@ -3,13 +3,13 @@ import './App.css';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
-import MoviesCard from '../MoviesCard/MoviesCard';
+import MoviesCardList from '../MoviesCardList/MoviesCardList';
 
 function App() {
   return (
     <div className="app">
       <Header />
-        <MoviesCard />
+        <MoviesCardList />
       <Footer />
     </div>
   );

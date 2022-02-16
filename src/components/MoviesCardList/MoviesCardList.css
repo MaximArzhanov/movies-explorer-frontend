@@ -1,0 +1,11 @@
+.movies-card-list {
+    margin: 0;
+    max-width: 1280px;
+    width: 100%;
+    padding: 70px 70px 10px 70px;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    justify-items: center;
+    gap: 32px;
+}
