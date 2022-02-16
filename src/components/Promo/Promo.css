@@ -1,18 +1,16 @@
 .promo {
     margin: 0;
-    padding: 0;
-    padding-left: 70px;
-    padding-right: 70px;
+    padding: 75px 70px 75px 70px;
     width: 100%;
     box-sizing: border-box;
-    min-height: 575px;
     background-color: #073042;
     display: flex;
     justify-content: space-between;
 }
 
 .promo__container {
-    margin-top: 75px;
+    margin: 0;
+    padding: 0;
     max-width: 640px;
     display: flex;
     flex-direction: column;
