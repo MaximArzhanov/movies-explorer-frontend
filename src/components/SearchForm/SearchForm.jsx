@@ -3,6 +3,13 @@ import './SearchForm.css';
 
 function SearchForm() {
 
+  const [checkboxOnlyShortMovies, setcheckboxOnlyShortMovies] = React.useState(false);
+
+  /** Записывает значение чекбокса в стейт-переменную */
+  function handleChangeCheckbox(e) {
+    setcheckboxOnlyShortMovies(e.target.checked);
+  }
+
   return (
     <section className="search-form">
       <form className="form">
@@ -13,7 +20,8 @@ function SearchForm() {
         </button>
         <label className="form__label-filter">
           <input className="form__invisible-checkbox"
-                type="checkbox" name="short-movies" />
+                type="checkbox" name="short-movies"
+                checked={checkboxOnlyShortMovies} onChange={handleChangeCheckbox} />
           <span className="form__visible-checkbox"></span>
           <span className="form__label-text">Короткометражки</span>
         </label>
