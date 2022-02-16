@@ -2,14 +2,15 @@ import React from 'react';
 import './App.css';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
+import Movies from '../Movies/Movies';
 import Footer from '../Footer/Footer';
-import MoviesCardList from '../MoviesCardList/MoviesCardList';
+
 
 function App() {
   return (
     <div className="app">
       <Header />
-        <MoviesCardList />
+      <Movies />
       <Footer />
     </div>
   );
