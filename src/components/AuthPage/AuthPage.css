@@ -88,7 +88,7 @@
     border-radius: 8px;
 }
 
-.form__input_error {
+.form__input_state_error {
     color: #ee3465;
 }
 

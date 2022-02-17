@@ -15,7 +15,8 @@ import ErrorPage from '../ErrorPage/ErrorPage';
 function App() {
   return (
     <div className="app">
-      <ErrorPage />
+      <Header />
+      <Profile />
     </div>
   );
 }

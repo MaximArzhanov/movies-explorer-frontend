@@ -1,10 +1,148 @@
 .profile {
     margin: 0;
-    padding: 74px 0 70px 0;
+    padding: 74px 70px 70px 70px;
     box-sizing: border-box;
+    max-width: 550px;
     width: 100%;
-    background-color: #202020;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    background-color: #202020;
+}
+
+.profile__title {
+    margin: 0;
+    padding: 0;
+    align-self: center;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+    color: #fff;
+}
+
+.profile__link {
+    margin: 0;
+    margin-top: 16px;
+    padding: 0;
+    align-self: center;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    color: #ee3465;
+    text-decoration: none;
+}
+
+.profile-form {
+    margin: 120px 0 0 0;
+    padding: 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-form__container {
+    border-bottom: 1px solid #424242;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.profile-form__container:last-of-type {
+    margin-bottom: 10px;
+}
+
+.profile-form__input {
+    margin: 0;
+    padding: 16px 0 16px 0;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 13px;
+    color: #fff;
+    background-color: #202020;
+    border: none;
+    outline: none;
+    flex-grow: 1;
+}
+
+.profile-form__input::-webkit-input-placeholder {
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 13px;
+    color: #fff;
+}
+.profile-form__input::-moz-placeholder          {
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 13px;
+    color: #fff;
+}
+.profile-form__input::-ms-input-placeholder     {
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 13px;
+    color: #fff;
+}
+
+.profile-form__input::placeholder {
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 13px;
+    color: #fff;
+}
+
+.profile-form__current-value {
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 11px;
+    line-height: 13px;
+    color: #fff;
+    align-self: center;
+    width: 150px;
+    text-align: end;
+    word-wrap: break-word;
+}
+
+.profile-form__input_state_error {
+    color: #ee3465;
+}
+
+.profile-form__text-error {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 12px;
+    color: #ee3465;
+}
+
+.profile-form__button {
+    margin: auto 0 0 0;
+    padding: 0;
+    align-self: center;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 16px;
+    color: #fff;
+    background-color: #202020;
+    border: none;
+    outline: none;
 }
