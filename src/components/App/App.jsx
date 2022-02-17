@@ -9,12 +9,13 @@ import Register from '../Register/Register';
 import AuthPage from '../AuthPage/AuthPage'
 import Profile from '../Profile/Profile'
 import Footer from '../Footer/Footer';
+import ErrorPage from '../ErrorPage/ErrorPage';
 
 
 function App() {
   return (
     <div className="app">
-      <Register />
+      <ErrorPage />
     </div>
   );
 }
