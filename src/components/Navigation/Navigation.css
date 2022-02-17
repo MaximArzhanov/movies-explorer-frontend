@@ -1,0 +1,57 @@
+.navigation {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+}
+
+.navigation__links {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    list-style: none;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 30px;
+}
+
+.navigation__item {
+    margin: 0;
+    padding: 0;
+}
+
+.navigation__item:last-of-type {
+    margin-left: auto;
+}
+
+.navigation__item_visibility_small-screen {
+    display: none;
+}
+
+.navigation__link {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 18px;
+    text-decoration: none;
+    color: #fff;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.account-link::after {
+    margin-left: 13px;
+    content: "";
+    width: 30px;
+    height: 30px;
+    background-image: url('../../images/icon-account.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #313131;
+    border-radius: 6px;
+}
