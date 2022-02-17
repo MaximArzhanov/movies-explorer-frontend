@@ -35,7 +35,7 @@
 }
 
 .about-project__paragraph {
-    margin: 25px 0 0 0;
+    margin: 26px 0 0 0;
     padding: 0;
     max-width: 500px;
     font-family: 'Inter', Arial, Helvetica, sans-serif;
@@ -102,4 +102,24 @@
 
 .about-project__skill:last-of-type {
     grid-column: 2/3;
+}
+
+@media screen and (max-width: 1023px) {
+    .about-project {
+        padding: 90px 50px 90px 50px;
+    }
+
+    .about-project__paragraph {
+        font-size: 12px;
+        line-height: 18px;
+        margin-top: 22px;
+    }
+
+    .about-project__time-bar {
+        margin-top: 93px;
+    }
+
+    .about-project__skill {
+        font-weight: normal;
+    }
 }

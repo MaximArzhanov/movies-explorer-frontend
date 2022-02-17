@@ -22,7 +22,7 @@
 }
 
 .techs__paragraph {
-    margin: 25px 0 0 0;
+    margin: 26px 0 0 0;
     padding: 0;
     max-width: 460px;
     text-align: center;
@@ -55,7 +55,6 @@
     margin: 0;
     padding: 21px 0;
     width: 90px;
-    height: 60px;
     background-color: #303030;
     border-radius: 10px;
     text-align: center;
@@ -64,4 +63,30 @@
 
 .techs__item:last-of-type {
     margin-right: auto;
+}
+
+@media screen and (max-width: 1023px) {
+    .techs {
+        padding: 90px 50px 90px 50px;
+    }
+
+    .techs__subtitle {
+        margin-top: 80px;
+    }
+
+    .techs__paragraph {
+        margin-top: 22px;
+        font-size: 12px;
+        line-height: 18px;
+    }
+
+    .techs__list {
+        margin-top: 83px;
+        font-size: 12px;
+        line-height: 15px;
+    }
+
+    .techs__item {
+        width: 84px;
+    }
 }

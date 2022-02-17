@@ -17,7 +17,7 @@ function AboutMe() {
         <div className="about-me__info">
           <h3 className="about-me__subtitle">Максим</h3>
           <p className="about-me__description">Начинающий фронтенд-разработчик, 28 лет</p>
-          <p className="section-paragraph">
+          <p className="about-me__paragraph">
             Прохожу курс по веб-разработке.
             Стремлюсь создавать качественные интерфейсы.
             В&nbsp;свободное время люблю смотреть кино, гулять и играть в настольные игры.

@@ -6,9 +6,9 @@ function Portfolio() {
 
   return (
     <section className="portfolio">
-      <h2 className="section-title section-title_size_small">
+      <h3 className="section-title section-title_size_small">
         Портфолио
-      </h2>
+      </h3>
 
       <ul className="portfolio__list">
         <li className="portfolio__item">
