@@ -41,6 +41,13 @@
     background-position: center;
 }
 
+.movies-card__button_delete {
+    background-color: #313131;
+    background-image: url('../../images/icon-delete-movie-card.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 .movies-card__button_saved::after {
     content: '';
 }

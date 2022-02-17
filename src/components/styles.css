@@ -1,3 +1,12 @@
+.logo {
+    background-image: url(../images/header-logo.svg);
+    flex-shrink: 0;
+    background-repeat: no-repeat;
+    margin-right: 44px;
+    width: 38px;
+    height: 38px;
+}
+
 .section-title {
     margin: 0;
     padding: 0;
@@ -29,4 +38,34 @@
     font-size: 14px;
     line-height: 22px;
     color: #fff;
+}
+
+.title {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+    color: #fff;
+}
+
+.form {
+    margin: 125px 0 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.form__input {
+
+}
+
+.form__button {
+
+}
+
+.button {
+    
 }
