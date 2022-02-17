@@ -33,9 +33,8 @@ function Profile(props) {
           />
           <span className="profile-form__current-value">pochta@yandex.ru</span>
         </div>
-
+        
         <span className="profile-form__text-error">Что-то пошло не так...</span>
-
         <button className="profile-form__button" type="submit">
           Редактировать
         </button>

@@ -8,9 +8,9 @@ function Movies() {
 
   return (
     <section className="movies">
-        <SearchForm />
-        <MoviesCardList />
-        <Preloader />
+      <SearchForm />
+      <MoviesCardList />
+      <Preloader />
     </section>
   );
 }

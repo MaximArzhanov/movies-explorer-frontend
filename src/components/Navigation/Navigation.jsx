@@ -11,7 +11,7 @@ function Navigation() {
         <li className="navigation__item navigation__item_visibility_small-screen">
           <Link to="/"
                 className="navigation__link">
-                  Главная
+            Главная
           </Link>
         </li>
 

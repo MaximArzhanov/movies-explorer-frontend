@@ -3,11 +3,6 @@ import AuthPage from "../AuthPage/AuthPage";
 
 function Login(props) {
 
-  /** Записывает имя и адрес ссылки в стейт-переменные */
-//   React.useEffect(() => {
-//     props.onPage("Регистрация", "/sign-up");
-//   }, []);
-
   return (
     <AuthPage
       textTitle="Рады видеть!"

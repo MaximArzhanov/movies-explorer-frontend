@@ -8,6 +8,7 @@ function AuthPage(props) {
     <div className="auth-page">
       <Link to="/" className="logo"></Link>
       <h2 className="auth-page__title">{props.textTitle}</h2>
+
       <form className="form">
         {props.children}
         <span className="form__title-input">E-mail</span>
@@ -18,6 +19,7 @@ function AuthPage(props) {
           name="email"
           required
         />
+        
         <span className="form__title-input">Пароль</span>
         <input
           id="password-input"
@@ -33,12 +35,14 @@ function AuthPage(props) {
           {props.textButton}
         </button>
       </form>
+
       <div className="auth-page__container">
         <span className="auth-page__question">{props.textQuestion}</span>
         <Link to={props.linkRoute} className="auth-page__link">
           {props.textLink}
         </Link>
       </div>
+
     </div>
   );
 }

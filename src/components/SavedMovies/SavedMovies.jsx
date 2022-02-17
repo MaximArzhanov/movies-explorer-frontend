@@ -9,8 +9,8 @@ function SavedMovies() {
 
   return (
     <section className="saved-movies">
-        <SearchForm />
-        <MoviesCardList buttonContent={buttonContent}/>
+      <SearchForm />
+      <MoviesCardList buttonContent={buttonContent}/>
     </section>
   );
 }

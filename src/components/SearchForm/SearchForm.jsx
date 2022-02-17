@@ -20,8 +20,9 @@ function SearchForm() {
         </button>
         <label className="search-form__label-filter">
           <input className="search-form__invisible-checkbox"
-                type="checkbox" name="short-movies"
-                checked={checkboxOnlyShortMovies} onChange={handleChangeCheckbox} />
+            type="checkbox" name="short-movies"
+            checked={checkboxOnlyShortMovies} onChange={handleChangeCheckbox}
+          />
           <span className="search-form__visible-checkbox"></span>
           <span className="search-form__label-text">Короткометражки</span>
         </label>

@@ -6,18 +6,18 @@ function MoviesCardList(props) {
 
   return (
     <section className="movies-card-list">
-        <MoviesCard buttonContent={props.buttonContent}/>
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
+      <MoviesCard buttonContent={props.buttonContent}/>
+      <MoviesCard />
+      <MoviesCard />
+      <MoviesCard />
+      <MoviesCard />
+      <MoviesCard />
+      <MoviesCard />
+      <MoviesCard />
+      <MoviesCard />
+      <MoviesCard />
+      <MoviesCard />
+      <MoviesCard />
     </section>
   );
 }
