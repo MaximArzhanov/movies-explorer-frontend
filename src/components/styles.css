@@ -19,6 +19,7 @@
     line-height: 27px;
     color: #fff;
     border-bottom: 1px solid #dadada;
+    letter-spacing: -0.04em;
 }
 
 .section-title_size_small {
@@ -49,23 +50,4 @@
     font-size: 24px;
     line-height: 29px;
     color: #fff;
-}
-
-.form {
-    margin: 125px 0 0 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-}
-
-.form__input {
-
-}
-
-.form__button {
-
-}
-
-.button {
-    
 }
