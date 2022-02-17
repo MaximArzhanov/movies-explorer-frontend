@@ -6,7 +6,16 @@ import Techs from '../Techs/Techs';
 import AboutMe from '../AboutMe/AboutMe';
 import Portfolio from '../Portfolio/Portfolio';
 
-function Main() {
+function Main(props) {
+
+  /** Записывает в стейт-переменную значение true (Пользователь на странице лендинга)*/
+  React.useEffect(() => {
+    props.onLandingPage(true);
+
+    return () => {
+      props.onLandingPage(false);
+    };
+  }, []);
 
   return (
     <main className="main">

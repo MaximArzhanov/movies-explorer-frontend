@@ -6,8 +6,10 @@ import Navigation from '../Navigation/Navigation';
 
 function Header(props) {
 
+  const headerClassList = `header ${props.headerThemeDark ? "header_theme_dark" : ""}`;
+
   return (
-    <header className="header">
+    <header className={headerClassList}>
       <Link to="/" className="logo"></Link>
 
       { props.loggedIn 

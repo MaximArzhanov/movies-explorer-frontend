@@ -11,12 +11,21 @@ import Profile from '../Profile/Profile'
 import Footer from '../Footer/Footer';
 import ErrorPage from '../ErrorPage/ErrorPage';
 
-
 function App() {
+
+  /** Имя ссылки (для Header) */
+  const [headerThemeDark, setHeaderThemeDark] = React.useState(false);
+
+  /** Записывает имя и адрес ссылки в стейт-переменные */
+  function onLandingPage(state) {
+    setHeaderThemeDark(state);
+  }
+
   return (
     <div className="app">
-      <Header loggedIn={true}/>
-      <Profile />
+      <Header loggedIn={true} headerThemeDark={headerThemeDark}/>
+      <Main onLandingPage={onLandingPage} />
+      <Footer />
     </div>
   );
 }
