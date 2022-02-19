@@ -8,6 +8,14 @@
     flex-direction: column;
 }
 
+.portfolio-title {
+    font-size: 18px;
+    line-height: 20px;
+    color: #8b8b8b;
+    border: none;
+    letter-spacing: 0;
+}
+
 .portfolio__list {
     margin: 50 0 0 0;
     padding: 0;
@@ -60,11 +68,35 @@
 
 @media screen and (max-width: 1023px) {
     .portfolio {
-        padding: 0 50px 90px 50px;
+        padding-right: 50px;
+        padding-bottom: 90px;
+        padding-left: 50px;
     }
 
     .portfolio__link {
         font-size: 28px;
         line-height: 50px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .portfolio {
+        padding-right: 14px;
+        padding-bottom: 70px;
+        padding-left: 14px;
+    }
+
+    .portfolio-title {
+        font-size: 14px;
+    }
+
+    .portfolio__link {
+        font-size: 18px;
+        line-height: 28px;
+    }
+
+    .portfolio__icon-link {
+        width: 15px;
+        height: 15px;
     }
 }

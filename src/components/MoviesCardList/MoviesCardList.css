@@ -15,8 +15,25 @@
     .movies-card-list {
         padding-left: 30px;
         padding-right: 30px;
-        padding-bottom: 0;
+        padding-bottom: 30px;
         column-gap: 24px;
         row-gap: 35px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .movies-card-list {
+        grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+        padding-top: 50px;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-bottom: 30px;
+        row-gap: 16px;
+    }
+}
+
+@media screen and (max-width: 319px) {
+    .movies-card-list {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     }
 }

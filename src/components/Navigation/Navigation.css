@@ -63,6 +63,7 @@
 
 .navigation__links {
     margin: 0;
+    margin-left: 44px;
     padding: 0;
     width: 100%;
     list-style: none;
@@ -98,6 +99,11 @@
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
+}
+
+.account-link {
+    font-size: 14px;
+    line-height: 16px;
 }
 
 .account-link::after {
@@ -138,6 +144,7 @@
     }
 
     .navigation__links {
+        margin-left: 0;
         flex-direction: column;
         gap: 28px;
         height: 100%;
@@ -157,5 +164,15 @@
     .navigation__link {
         font-size: 18px;
         line-height: 22px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .navigation__links {
+        margin-top: 144px;
+    }
+
+    .navigation__item:last-of-type {
+        margin-bottom: 48px;
     }
 }

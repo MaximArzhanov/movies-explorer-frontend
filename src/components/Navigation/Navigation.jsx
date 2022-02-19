@@ -70,10 +70,7 @@ function Navigation(props) {
           <ul className="navigation__links">
 
             <li className="navigation__item">
-              <Link to="/"
-                    className="navigation__link">
-                Главная
-              </Link>
+              <Link to="/" className="navigation__link">Главная</Link>
             </li>
 
             <li className="navigation__item">

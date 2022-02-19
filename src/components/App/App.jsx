@@ -24,12 +24,15 @@ function App() {
   return (
     <div className="app">
       <Header loggedIn={true} headerThemeBlue={headerThemeBlue} />
-      <Main onLandingPage={onLandingPage} />
+      {/* <Main onLandingPage={onLandingPage} /> */}
       {/* <Movies moviesCardListIsFull={true} /> */}
-      <Footer />
+      <SavedMovies moviesCardListIsFull={true} />
+      
       {/* <ErrorPage /> */}
+      {/* <Register /> */}
       {/* <Login /> */}
       {/* <Profile /> */}
+      <Footer />
     </div>
   );
 }

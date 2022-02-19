@@ -1,0 +1,8 @@
+.logo {
+    background-image: url(../../images/header-logo.svg);
+    flex-shrink: 0;
+    background-repeat: no-repeat;
+    /* margin-right: 44px; */
+    width: 38px;
+    height: 38px;
+}

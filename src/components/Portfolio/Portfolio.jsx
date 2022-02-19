@@ -6,7 +6,7 @@ function Portfolio() {
 
   return (
     <section className="portfolio">
-      <h3 className="section-title section-title_size_small">
+      <h3 className="section-title portfolio-title">
         Портфолио
       </h3>
 

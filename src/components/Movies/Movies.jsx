@@ -2,7 +2,7 @@ import React from 'react';
 import './Movies.css';
 import SearchForm from '../SearchForm/SearchForm'
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import Preloader from '../Preloader/Preloader'
+import ButtonLoadMore from '../ButtonLoadMore/ButtonLoadMore'
 
 function Movies(props) {
 
@@ -10,12 +10,7 @@ function Movies(props) {
     <section className="movies">
       <SearchForm />
       <MoviesCardList isLoading={false}/>
-      {
-        props.moviesCardListIsFull &&
-        <div className="movies__container">
-          <button className="movies__button">Ещё</button>
-        </div>
-      }
+      { props.moviesCardListIsFull && <ButtonLoadMore /> }
     </section>
   );
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Header.css';
-import '../styles.css';
+import Logo from '../Logo/Logo';
 import Navigation from '../Navigation/Navigation';
 
 function Header(props) {
@@ -13,7 +13,7 @@ function Header(props) {
 
   return (
     <header className={headerClassList}>
-      <Link to="/" className="logo"></Link>
+      <Logo />
 
       { props.loggedIn 
           ? <Navigation headerThemeBlue={props.headerThemeBlue}/> 

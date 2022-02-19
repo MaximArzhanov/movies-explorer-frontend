@@ -1,0 +1,35 @@
+.button-load-more {
+    margin: 0;
+    padding: 50px 70px 80px 70px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.button-load-more__button {
+    width: 100%;
+    min-height: 36px;
+    background-color: #2f2f2f;
+    border-radius: 6px;
+    outline: none;
+    border: none;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+    color: #fff;
+}
+
+@media screen and (max-width: 1023px) {
+    .button-load-more {
+        padding-right: 30px;
+        padding-left: 30px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .button-load-more {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+}
