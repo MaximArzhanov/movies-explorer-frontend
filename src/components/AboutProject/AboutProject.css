@@ -52,7 +52,7 @@
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 4fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 1fr auto;
     row-gap: 14px;
 }
 
@@ -121,5 +121,51 @@
 
     .about-project__skill {
         font-weight: normal;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .about-project {
+        padding: 70px 18px 70px 18px;
+        
+    }
+
+    .about-project__text-content {
+        margin-top: 60px;
+        flex-wrap: wrap;
+        gap: 56px;
+    }
+
+    .about-project__container {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .about-project__subtitle {
+        font-size: 18px;
+        line-height: 22px;
+    }
+
+    .about-project__paragraph {
+        font-size: 11px;
+        line-height: 16px;
+        margin-top: 16px;
+    }
+
+    .about-project__time-bar {
+        margin-top: 60px;
+        row-gap: 10px;
+    }
+
+    .about-project__time-line {
+        padding-top: 11px;
+        padding-bottom: 11px;
+        font-size: 11px;
+        line-height: 13px;
+    }
+
+    .about-project__skill {
+        font-size: 11px;
+        line-height: 13px;
     }
 }

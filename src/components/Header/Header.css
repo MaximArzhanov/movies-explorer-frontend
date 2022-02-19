@@ -11,7 +11,7 @@
     background-color: #202020;
 }
 
-.header_theme_dark {
+.header_theme_blue {
     background-color: #073042;
 }
 
@@ -43,6 +43,14 @@
 
 @media screen and (max-width: 1023px) {
     .header {
-        padding: 18px 30px 18px 30px;
+        padding-right: 30px;
+        padding-left: 30px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .header {
+        padding-right: 14px;
+        padding-left: 14px;
     }
 }

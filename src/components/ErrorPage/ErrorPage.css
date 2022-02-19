@@ -8,7 +8,7 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 100%;
+    height: 100vh;
 }
 
 .error-page__code {
@@ -23,7 +23,7 @@
 }
 
 .error-page__message {
-    margin: 0;
+    margin: 0 0 auto 0;
     padding: 0;
     font-family: 'Inter', Arial, Helvetica, sans-serif;
     font-style: normal;
@@ -44,4 +44,15 @@
     line-height: 17px;
     text-decoration: none;
     color: #4285f4;
+}
+
+@media screen and (max-width: 1023px) {
+    .error-page__link {
+        margin-top: 184px;
+        margin-bottom: auto;
+    }
+
+    .error-page__message {
+        margin-bottom: 0;
+    }
 }

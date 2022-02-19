@@ -13,19 +13,23 @@ import ErrorPage from '../ErrorPage/ErrorPage';
 
 function App() {
 
-  /** Имя ссылки (для Header) */
-  const [headerThemeDark, setHeaderThemeDark] = React.useState(false);
+  /** Стейт для установки темы для Header */
+  const [headerThemeBlue, setHeaderThemeBlue] = React.useState(false);
 
-  /** Записывает имя и адрес ссылки в стейт-переменные */
+  /** Если пользователь на главной странице (Main) то включается синяя тема для Header */
   function onLandingPage(state) {
-    setHeaderThemeDark(state);
+    setHeaderThemeBlue(state);
   }
 
   return (
     <div className="app">
-      <Header loggedIn={true} headerThemeDark={headerThemeDark}/>
+      <Header loggedIn={true} headerThemeBlue={headerThemeBlue} />
       <Main onLandingPage={onLandingPage} />
+      {/* <Movies moviesCardListIsFull={true} /> */}
       <Footer />
+      {/* <ErrorPage /> */}
+      {/* <Login /> */}
+      {/* <Profile /> */}
     </div>
   );
 }

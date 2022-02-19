@@ -102,3 +102,32 @@
         margin-left: 0;
     }
 }
+
+
+@media screen and (max-width: 1023px) {
+    .promo {
+        padding: 70px 18px 18px 18px;
+    }
+
+    .promo__container {
+        margin-top: 44px;
+    }
+
+    .promo__title {
+        font-size: 30px;
+        line-height: 38px;
+    }
+
+    .promo__subtitle {
+        margin-top: 24px;
+    }
+
+    .promo__link {
+        margin-top: 80px;
+    }
+
+    .promo__image {
+        width: 210px;
+        height: 206px;
+    }
+}

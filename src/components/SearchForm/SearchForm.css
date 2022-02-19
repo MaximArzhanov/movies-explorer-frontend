@@ -159,3 +159,15 @@
     padding-top: 70px;
     border-bottom: 1px solid #424242;
 }
+
+@media screen and (max-width: 1023px) {
+    .search-form-container {
+        padding-top: 80px;
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .search-form-container__line {
+        padding-top: 110px;
+    }
+}

@@ -1,10 +1,11 @@
 .profile {
-    margin: 0;
+    margin: auto;
     padding: 74px 70px 70px 70px;
     box-sizing: border-box;
     max-width: 550px;
     width: 100%;
-    height: 100%;
+    height: 100vh;
+    max-height: 600px;
     display: flex;
     flex-direction: column;
     background-color: #202020;
@@ -23,8 +24,7 @@
 }
 
 .profile__link {
-    margin: 0;
-    margin-top: 16px;
+    margin: 16px 0 40px 0;
     padding: 0;
     align-self: center;
     font-family: 'Inter', Arial, Helvetica, sans-serif;
@@ -34,6 +34,10 @@
     line-height: 16px;
     color: #ee3465;
     text-decoration: none;
+}
+
+.profile__link_disabled {
+    display: none;
 }
 
 .profile-form {
@@ -52,7 +56,7 @@
 }
 
 .profile-form__container:last-of-type {
-    margin-bottom: 10px;
+    margin-bottom: auto;
 }
 
 .profile-form__input {
@@ -68,6 +72,10 @@
     border: none;
     outline: none;
     flex-grow: 1;
+}
+
+.profile-form__input_inactive {
+    pointer-events: none;
 }
 
 .profile-form__input::-webkit-input-placeholder {
@@ -121,19 +129,29 @@
     color: #ee3465;
 }
 
-.profile-form__text-error {
-    margin: 0;
+.profile-form__text-result {
+    margin: 20px 0 0 0;
     padding: 0;
     font-family: 'Inter', Arial, Helvetica, sans-serif;
     font-style: normal;
     font-weight: normal;
-    font-size: 10px;
-    line-height: 12px;
+    font-size: 11px;
+    line-height: 13px;
+    color: #3ddc84;
+    align-self: center;
+    display: none;
+}
+
+.profile-form__text-result_enabled {
+    display: inline-flex;
+}
+
+.profile-form__text-result_type_error {
     color: #ee3465;
 }
 
 .profile-form__button {
-    margin: auto 0 0 0;
+    margin: 20px 0 0 0;
     padding: 0;
     align-self: center;
     font-family: 'Inter', Arial, Helvetica, sans-serif;
@@ -145,4 +163,27 @@
     background-color: #202020;
     border: none;
     outline: none;
+}
+
+.profile-form__button_theme_blue {
+    margin-bottom: 40px;
+    min-height: 45px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    background-color: #4285f4;
+    border-radius: 3px;
+    align-self: stretch;
+}
+
+.profile-form__button_inactive {
+    color: rgba(255, 255, 255, .2);
+    background-color: rgba(255, 255, 255, .2);
+    pointer-events: none;
+}
+
+@media screen and (max-width: 1023px) {
+    .profile-form {
+        margin-top: 96px;
+    }
 }

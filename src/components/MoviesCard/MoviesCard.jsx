@@ -4,10 +4,11 @@ import moviePicture from '../../images/movie-picture-1.png'
 
 function MoviesCard(props) {
 
-  const classListButton = `movies-card__button movies-card__button_saved ${props.buttonContent === 'savedMovie' ? 'movies-card__button_delete' : ''}`;
+  let classListButton = 'movies-card__button movies-card__button_saved ';
+  if (props.buttonContent === 'savedMovie') { classListButton += 'movies-card__button_delete' }
 
   return (
-    <article className="movies-card">
+    <li className="movies-card">
       <figure className="movie">
         <figcaption className="movie__title">
           В погоне за Бенкси
@@ -16,7 +17,7 @@ function MoviesCard(props) {
         <img src={moviePicture} alt="Постер к фильму" className="movie__picture" />
       </figure>
       <button className={classListButton}></button>
-    </article>
+    </li>
   );
 }
 

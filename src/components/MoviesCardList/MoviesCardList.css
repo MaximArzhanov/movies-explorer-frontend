@@ -5,7 +5,18 @@
     padding: 70px 70px 10px 70px;
     box-sizing: border-box;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    list-style: none;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
     justify-items: center;
     gap: 32px;
+}
+
+@media screen and (max-width: 1023px) {
+    .movies-card-list {
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-bottom: 0;
+        column-gap: 24px;
+        row-gap: 35px;
+    }
 }
