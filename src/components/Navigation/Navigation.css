@@ -89,6 +89,7 @@
 .navigation__link {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
     font-family: 'Inter', Arial, Helvetica, sans-serif;
     font-style: normal;
     font-weight: 500;
@@ -100,6 +101,10 @@
     flex-wrap: nowrap;
     align-items: center;
 }
+
+/* .navigation__link_active {
+    border-bottom: 2px solid #fff;
+} */
 
 .account-link {
     font-size: 14px;

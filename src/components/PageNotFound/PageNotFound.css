@@ -1,4 +1,4 @@
-.error-page {
+.page-not-found {
     margin: 0;
     padding: 70px;
     box-sizing: border-box;
@@ -9,7 +9,7 @@
     height: 100vh;
 }
 
-.error-page__code {
+.page-not-found__code {
     width: 100%;
     margin: auto 0 0 0;
     padding: 0;
@@ -23,7 +23,7 @@
     align-self: center;
 }
 
-.error-page__message {
+.page-not-found__message {
     width: 100%;
     margin: 5px 0 0 0;
     padding: 0;
@@ -37,37 +37,39 @@
     align-self: flex-start;
 }
 
-.error-page__link {
+.page-not-found__button {
     margin: 0 auto;
     padding: 0;
+    outline: none;
+    border: none;
     font-family: 'Inter', Arial, Helvetica, sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
     line-height: 17px;
-    text-decoration: none;
+    background-color: #202020;
     color: #4285f4;
     align-self: flex-end;
 }
 
 @media screen and (max-width: 767px) {
-    .error-page {
+    .page-not-found {
         padding: 30px;
     }
 
-    .error-page__code {
+    .page-not-found__code {
         font-size: 80px;
         line-height: 97px;
     }
 
-    .error-page__message {
+    .page-not-found__message {
         margin-top: 10px;
         margin-bottom: auto;
         font-size: 12px;
         line-height: 15px;
     }
 
-    .error-page__link {
+    .page-not-found__button {
         margin-top: auto;
         margin-bottom: 0;
         font-size: 12px;

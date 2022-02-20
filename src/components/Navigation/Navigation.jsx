@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import './Navigation.css';
 
 function Navigation(props) {
@@ -66,26 +66,39 @@ function Navigation(props) {
 
       <div className={classListNavigationMenu}>
         <div className="navigation__overlay" onClick={handleClickOverlay}></div>
-        <div className={classListNavigationContainer}>
+        <nav className={classListNavigationContainer}>
           <ul className="navigation__links">
 
             <li className="navigation__item">
-              <Link to="/" className="navigation__link">Главная</Link>
+              <NavLink
+                exact to="/" activeClassName="navigation__link_active"
+                className="navigation__link"
+              >Главная
+              </NavLink>
             </li>
 
             <li className="navigation__item">
-              <Link to="/" className="navigation__link">Фильмы</Link>
+              <NavLink
+                to="/movies" activeClassName="navigation__link_active"
+                className="navigation__link"
+              >Фильмы</NavLink>
             </li>
 
             <li className="navigation__item">
-              <Link to="/" className="navigation__link">Сохранённые фильмы</Link>
+              <NavLink
+                to="/saved-movies" activeClassName="navigation__link_active"
+                className="navigation__link"
+              >Сохранённые фильмы</NavLink>
             </li>
 
             <li className="navigation__item">
-              <Link to="/" className="navigation__link account-link">Аккаунт</Link>
+              <NavLink
+                to="/profile" activeClassName="navigation__link_active"
+                className="navigation__link account-link"
+              >Аккаунт</NavLink>
             </li>
           </ul>
-        </div>
+        </nav>
       </div>
 
 

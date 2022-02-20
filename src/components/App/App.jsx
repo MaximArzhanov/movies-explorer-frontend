@@ -1,4 +1,5 @@
 import React from 'react';
+import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
@@ -6,10 +7,9 @@ import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies'
 import Login from '../Login/Login';
 import Register from '../Register/Register';
-import AuthPage from '../AuthPage/AuthPage'
 import Profile from '../Profile/Profile'
 import Footer from '../Footer/Footer';
-import ErrorPage from '../ErrorPage/ErrorPage';
+import PageNotFound from '../PageNotFound/PageNotFound';
 
 function App() {
 
@@ -23,16 +23,42 @@ function App() {
 
   return (
     <div className="app">
-      <Header loggedIn={true} headerThemeBlue={headerThemeBlue} />
-      {/* <Main onLandingPage={onLandingPage} /> */}
-      {/* <Movies moviesCardListIsFull={true} /> */}
-      <SavedMovies moviesCardListIsFull={true} />
-      
-      {/* <ErrorPage /> */}
-      {/* <Register /> */}
-      {/* <Login /> */}
-      {/* <Profile /> */}
-      <Footer />
+      <Switch>
+        <Route exact path="/">
+          <Header loggedIn={true} headerThemeBlue={headerThemeBlue} />
+          <Main onLandingPage={onLandingPage} />
+          <Footer />
+        </Route>
+
+        <Route path="/movies">
+          <Header loggedIn={true} headerThemeBlue={headerThemeBlue} />
+          <Movies moviesCardListIsFull={true} />
+          <Footer />
+        </Route>
+
+        <Route path="/saved-movies">
+          <Header loggedIn={true} headerThemeBlue={headerThemeBlue} />
+          <SavedMovies moviesCardListIsFull={true} />
+          <Footer />
+        </Route>
+
+        <Route path="/profile">
+          <Header loggedIn={true} headerThemeBlue={headerThemeBlue} />
+          <Profile />
+        </Route>
+
+        <Route path="/signin">
+          <Login />
+        </Route>
+
+        <Route path="/signup">
+          <Register />
+        </Route>
+
+        <Route path="*">
+          <PageNotFound />
+        </Route>
+      </Switch>
     </div>
   );
 }
