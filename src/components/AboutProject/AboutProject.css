@@ -155,6 +155,7 @@
     .about-project__time-bar {
         margin-top: 60px;
         row-gap: 10px;
+        grid-template-columns: 4fr 7fr;
     }
 
     .about-project__time-line {

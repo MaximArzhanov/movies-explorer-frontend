@@ -18,8 +18,8 @@ function Header(props) {
       { props.loggedIn 
           ? <Navigation headerThemeBlue={props.headerThemeBlue}/> 
           : <div className="header__container">
-              <Link to="/" className="header__link">Регистрация</Link>
-              <Link to="/" className="header__link header__link_type_green-button">Войти</Link>
+              <Link to="/signup" className="header__link">Регистрация</Link>
+              <Link to="/signin" className="header__link header__link_type_green-button">Войти</Link>
             </div>
       }
 

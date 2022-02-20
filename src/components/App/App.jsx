@@ -25,7 +25,7 @@ function App() {
     <div className="app">
       <Switch>
         <Route exact path="/">
-          <Header loggedIn={true} headerThemeBlue={headerThemeBlue} />
+          <Header loggedIn={false} headerThemeBlue={headerThemeBlue} />
           <Main onLandingPage={onLandingPage} />
           <Footer />
         </Route>

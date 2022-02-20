@@ -110,7 +110,7 @@
 }
 
 
-@media screen and (max-width: 1023px) {
+@media screen and (max-width: 767px) {
     .promo {
         padding: 70px 18px 18px 18px;
     }
@@ -122,6 +122,7 @@
     .promo__title {
         font-size: 30px;
         line-height: 38px;
+        letter-spacing: -0.04em;
     }
 
     .promo__subtitle {
