@@ -54,6 +54,12 @@
     justify-content: space-between;
     align-items: center;
     letter-spacing: -0.04em;
+    transition: opacity .2s linear;
+    cursor: pointer;
+}
+
+.portfolio__link:hover {
+    opacity: .7;
 }
 
 .portfolio__icon-link {

@@ -9,7 +9,7 @@ function Register(props) {
       textButton="Зарегистрироваться"
       textQuestion="Уже зарегистрированы?"
       textLink="Войти"
-      linkRoute="/sign-in"
+      linkRoute="/signin"
     >
       <span className="form__title-input">Имя</span>
       <input

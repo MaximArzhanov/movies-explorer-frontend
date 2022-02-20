@@ -34,6 +34,11 @@
     border: none;
     outline: none;
     border-radius: 8px;
+    transition: transform 0.2s linear;
+}
+
+.form__input:focus {
+    transform: scale(1.03);
 }
 
 .form__input_state_error {
@@ -65,10 +70,16 @@
     font-size: 14px;
     line-height: 17px;
     color: #fff;
-    background-color: #4285f4;
+    background-color: rgba(66, 133, 244, 1);
     border: none;
     outline: none;
     border-radius: 3px;
+    cursor: pointer;
+    transition: background-color .2s linear;
+}
+
+.form__button:hover {
+    background-color: rgba(66, 133, 244, .8);
 }
 
 @media screen and (max-width: 767px) {

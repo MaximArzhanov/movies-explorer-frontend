@@ -34,6 +34,12 @@
     line-height: 16px;
     color: #ee3465;
     text-decoration: none;
+    transition: opacity .2s linear;
+    cursor: pointer;
+}
+
+.profile__link:hover {
+    opacity: .7;
 }
 
 .profile__link_disabled {
@@ -73,6 +79,11 @@
     border: none;
     outline: none;
     width: 60%;
+    transition: transform 0.2s linear;
+}
+
+.profile-form__input:focus {
+    transform: scale(1.03);
 }
 
 .profile-form__input_inactive {
@@ -164,6 +175,12 @@
     background-color: #202020;
     border: none;
     outline: none;
+    transition: opacity .2s linear;
+    cursor: pointer;
+}
+
+.profile-form__button:hover {
+    opacity: .7;
 }
 
 .profile-form__button_theme_blue {
@@ -172,9 +189,15 @@
     font-weight: 500;
     font-size: 14px;
     line-height: 17px;
-    background-color: #4285f4;
+    background-color: rgba(66, 133, 244, 1);
     border-radius: 3px;
     align-self: stretch;
+    cursor: pointer;
+    transition: all .2s linear;
+}
+
+.profile-form__button_theme_blue:hover {
+    background-color: rgba(66, 133, 244, .8);
 }
 
 .profile-form__button_inactive {

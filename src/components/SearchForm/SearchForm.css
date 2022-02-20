@@ -112,13 +112,19 @@
     flex-shrink: 0;
     width: 80px;
     height: 34px;
-    background-color: #4285f4;
+    background-color: rgba(66, 133, 244, 1);
     border-radius: 48px;
     border: none;
     outline: none;
     background-image: url('../../images/icon-search-white.svg');
     background-repeat: no-repeat;
     background-position: center;
+    cursor: pointer;
+    transition: all .2s linear;
+}
+
+.search-form__button:hover {
+    background-color: rgba(66, 133, 244, .8);
 }
 
 .search-form__label-filter {
@@ -167,6 +173,12 @@
     line-height: 18px;
     color: #fff;
     align-self: center;
+    cursor: pointer;
+    transition: opacity .2s linear;
+}
+
+.search-form__label-text:hover {
+    opacity: .7;
 }
 
 .search-form-container__line {

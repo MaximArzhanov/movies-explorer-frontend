@@ -43,6 +43,11 @@ function Navigation(props) {
     setIsNavigationMenuOpened(false);
   }
 
+  /** Закрытие меню навигации при нажатии на ссылку */
+  const handleLinkClick = () => {
+    setIsNavigationMenuOpened(false);
+  }
+
   let classListButton = isNavigationMenuOpened
     ? 'navigation__button navigation__button-close'
     : 'navigation__button';
@@ -72,7 +77,7 @@ function Navigation(props) {
             <li className="navigation__item">
               <NavLink
                 exact to="/" activeClassName="navigation__link_active"
-                className="navigation__link"
+                className="navigation__link" onClick={handleLinkClick}
               >Главная
               </NavLink>
             </li>
@@ -80,22 +85,25 @@ function Navigation(props) {
             <li className="navigation__item">
               <NavLink
                 to="/movies" activeClassName="navigation__link_active"
-                className="navigation__link"
+                className="navigation__link" onClick={handleLinkClick}
               >Фильмы</NavLink>
             </li>
 
             <li className="navigation__item">
               <NavLink
                 to="/saved-movies" activeClassName="navigation__link_active"
-                className="navigation__link"
+                className="navigation__link" onClick={handleLinkClick}
               >Сохранённые фильмы</NavLink>
             </li>
 
             <li className="navigation__item">
               <NavLink
                 to="/profile" activeClassName="navigation__link_active"
-                className="navigation__link account-link"
-              >Аккаунт</NavLink>
+                className="navigation__link navigation__link_type_account-link"
+                onClick={handleLinkClick}
+              >Аккаунт
+                <div className="account-link__icon"></div>
+              </NavLink>
             </li>
           </ul>
         </nav>

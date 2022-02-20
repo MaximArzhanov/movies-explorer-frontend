@@ -50,6 +50,12 @@
     background-color: #202020;
     color: #4285f4;
     align-self: flex-end;
+    transition: opacity .2s linear;
+    cursor: pointer;
+}
+
+.page-not-found__button:hover {
+    opacity: .7;
 }
 
 @media screen and (max-width: 767px) {

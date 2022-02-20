@@ -11,7 +11,7 @@ function SavedMovies(props) {
   return (
     <section className="saved-movies">
       <SearchForm />
-      <MoviesCardList buttonContent={buttonContent} isLoading={true}/>
+      <MoviesCardList buttonContent={buttonContent} isLoading={false}/>
       { props.moviesCardListIsFull && <ButtonLoadMore /> }
     </section>
   );

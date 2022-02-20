@@ -9,7 +9,7 @@ function Login(props) {
       textButton="Войти"
       textQuestion="Ещё не зарегистрированы?"
       textLink="Регистрация"
-      linkRoute="/sign-up"
+      linkRoute="/signup"
     />
   );
 }

@@ -14,7 +14,13 @@ function MoviesCard(props) {
           В погоне за Бенкси
         </figcaption>
         <span className="movie__duration">27 минут</span>
-        <img src={moviePicture} alt="Постер к фильму" className="movie__picture" />
+        <a
+          href={props.movieTrailerLink}
+          target="_blank" rel="noreferrer"
+          className="movie__link"
+        >
+         <img src={moviePicture} alt="Постер к фильму" className="movie__picture" />
+        </a>
       </figure>
       <button className={classListButton}></button>
     </li>

@@ -8,7 +8,7 @@
 .button-load-more__button {
     width: 100%;
     min-height: 36px;
-    background-color: #2f2f2f;
+    background-color: rgba(47, 47, 47, 1);
     border-radius: 6px;
     outline: none;
     border: none;
@@ -18,6 +18,12 @@
     font-size: 12px;
     line-height: 15px;
     color: #fff;
+    transition: background-color 0.2s linear;
+    cursor: pointer;
+}
+
+.button-load-more__button:hover {
+    background-color: rgba(47, 47, 47, .8);
 }
 
 @media screen and (max-width: 1023px) {
