@@ -1,16 +1,14 @@
 import React from 'react';
 import './AboutMe.css';
-import '../styles.css'
 import photo from '../../images/photo.png'
+import SectionTitle from '../SectionTitle/SectionTitle';
 
 function AboutMe() {
 
   return (
     <section className="about-me">
 
-      <h2 className="section-title">
-        Студент
-      </h2>
+      <SectionTitle titleText="Студент" />
 
       <div className="about-me__container">
 

@@ -1,14 +1,12 @@
 import React from 'react';
 import './Techs.css';
-import '../styles.css'
+import SectionTitle from '../SectionTitle/SectionTitle';
 
 function Techs() {
 
   return (
     <section className="techs">
-      <h2 className="section-title">
-        Технологии
-      </h2>
+      <SectionTitle titleText="Технологии" />
       <h3 className="techs__subtitle">7 технологий</h3>
       <p className="techs__paragraph">
         На курсе веб-разработки мы освоили технологии,

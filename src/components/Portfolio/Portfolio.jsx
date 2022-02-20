@@ -1,12 +1,12 @@
 import React from 'react';
 import './Portfolio.css';
-import '../styles.css'
 
 function Portfolio() {
 
   return (
     <section className="portfolio">
-      <h3 className="section-title portfolio-title">
+      
+      <h3 className="portfolio__title">
         Портфолио
       </h3>
 

@@ -1,12 +1,12 @@
 import React from 'react';
 import './AboutProject.css';
-import '../styles.css';
+import SectionTitle from '../SectionTitle/SectionTitle'
 
 function AboutProject() {
 
   return (
     <section className="about-project">
-      <h2 className="section-title">О проекте</h2>
+      <SectionTitle titleText="О проекте" />
       <div className="about-project__text-content">
         <aside className="about-project__container">
           <h3 className="about-project__subtitle">
