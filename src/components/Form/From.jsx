@@ -3,8 +3,26 @@ import './Form.css';
 
 function Form(props) {
 
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    props.onSubmit(props.name, email, password);
+  }
+
+  /** Записывает email пользователя в стейт-переменную */
+  function handleChangeEmail(e) {
+    setEmail(e.target.value);
+  }
+
+  /** Записывает пароль пользователя в стейт-переменную */
+  function handleChangePassword(e) {
+    setPassword(e.target.value);
+  }
+
   return (
-    <form className="form">
+    <form className="form" onSubmit={handleSubmit}>
       {props.children}
       <span className="form__title-input">E-mail</span>
       <input
@@ -13,6 +31,8 @@ function Form(props) {
           type="email"
           name="email"
           required
+          value={email || ""}
+          onChange={handleChangeEmail}
       />
       
       <span className="form__title-input">Пароль</span>
@@ -22,6 +42,8 @@ function Form(props) {
           type="password"
           name="password"
           required
+          value={password || ""}
+          onChange={handleChangePassword}
       />
       <span className="form__text-error">Что-то пошло не так...</span>
       <button className="form__button" type="submit">

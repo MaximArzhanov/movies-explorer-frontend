@@ -12,7 +12,11 @@ function AuthPage(props) {
       
       <h2 className="auth-page__title">{props.textTitle}</h2>
 
-      <Form textButton={props.textButton}>
+      <Form
+        textButton={props.textButton}
+        onSubmit={props.onSubmit}
+        name={props.name}
+      >
         {props.children}
       </Form>
 

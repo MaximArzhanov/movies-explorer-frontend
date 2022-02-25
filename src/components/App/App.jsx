@@ -10,6 +10,7 @@ import Register from '../Register/Register';
 import Profile from '../Profile/Profile'
 import Footer from '../Footer/Footer';
 import PageNotFound from '../PageNotFound/PageNotFound';
+import auth from "../../utils/Auth";
 
 function App() {
 
@@ -19,6 +20,17 @@ function App() {
   /** Если пользователь на главной странице (Main) то включается синяя тема для Header */
   function onLandingPage(state) {
     setHeaderThemeBlue(state);
+  }
+
+  /** Обработчик регистрации пользователя */
+  function handleUserRegister(name, password, email) {
+    auth.register(name, password, email)
+      .then((data) => {
+        console.log(data.message);
+      })
+      .catch((err) => {
+        console.error(err);
+      })
   }
 
   return (
@@ -52,7 +64,7 @@ function App() {
         </Route>
 
         <Route path="/signup">
-          <Register />
+          <Register handleUserRegister={handleUserRegister} />
         </Route>
 
         <Route path="*">
