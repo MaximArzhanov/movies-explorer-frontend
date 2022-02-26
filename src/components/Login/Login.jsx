@@ -3,6 +3,13 @@ import AuthPage from "../AuthPage/AuthPage";
 
 function Login(props) {
 
+  const [isOnLoginPage, setIsOnLoginPage] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsOnLoginPage(true);
+    return () => setIsOnLoginPage(false);
+  }, [])
+
   return (
     <AuthPage
       textTitle="Рады видеть!"
@@ -10,6 +17,8 @@ function Login(props) {
       textQuestion="Ещё не зарегистрированы?"
       textLink="Регистрация"
       linkRoute="/signup"
+      onSubmit={props.handleUserAuthorization}
+      isOnLoginPage={isOnLoginPage}
     />
   );
 }

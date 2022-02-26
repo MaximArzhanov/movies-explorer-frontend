@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import './AuthPage.css';
 import Logo from '../Logo/Logo';
-import Form from '../Form/From';
+import Form from '../Form/Form';
 
 function AuthPage(props) {
 
@@ -16,6 +16,8 @@ function AuthPage(props) {
         textButton={props.textButton}
         onSubmit={props.onSubmit}
         name={props.name}
+        isOnRegisterPage={props.isOnRegisterPage}
+        isOnLoginPage={props.isOnLoginPage}
       >
         {props.children}
       </Form>

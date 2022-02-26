@@ -23,9 +23,21 @@ function App() {
   }
 
   /** Обработчик регистрации пользователя */
-  function handleUserRegister(name, password, email) {
-    auth.register(name, password, email)
+  function handleUserRegister(name, email, password) {
+    auth.register(name, email, password)
       .then((data) => {
+        console.log(data.message);
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+  }
+
+  /** Обработчик авторизации пользователя */
+  function handleUserAuthorization(email, password) {
+    auth.authorization(email, password)
+      .then((data) => {
+        console.log(data);
         console.log(data.message);
       })
       .catch((err) => {
@@ -60,11 +72,15 @@ function App() {
         </Route>
 
         <Route path="/signin">
-          <Login />
+          <Login
+            handleUserAuthorization={handleUserAuthorization}
+          />
         </Route>
 
         <Route path="/signup">
-          <Register handleUserRegister={handleUserRegister} />
+          <Register
+            handleUserRegister={handleUserRegister}
+          />
         </Route>
 
         <Route path="*">

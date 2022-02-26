@@ -6,10 +6,15 @@ function Form(props) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
+  /** Запрос на регистрацию/авторизацию к API */
   function handleSubmit(e) {
     e.preventDefault();
-    props.onSubmit(props.name, email, password);
+    console.log(props.isOnRegisterPage);
+    console.log(props.isOnLoginPage);
+    if (props.isOnRegisterPage) { props.onSubmit(props.name, email, password); }
+    if (props.isOnLoginPage) { props.onSubmit(email, password); }
   }
+    
 
   /** Записывает email пользователя в стейт-переменную */
   function handleChangeEmail(e) {

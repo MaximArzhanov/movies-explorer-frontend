@@ -5,10 +5,17 @@ function Register(props) {
 
   const [name, setName] = React.useState('');
 
+  const [isOnRegisterPage, setIsOnRegisterPage] = React.useState(false);
+
   /** Записывает name пользователя в стейт-переменную */
   function handleChangeName(e) {
     setName(e.target.value);
   }
+
+  React.useEffect(() => {
+    setIsOnRegisterPage(true);
+    return () => setIsOnRegisterPage(false);
+  }, [])
 
   return (
     <AuthPage
@@ -19,6 +26,7 @@ function Register(props) {
       linkRoute="/signin"
       onSubmit={props.handleUserRegister}
       name={name}
+      isOnRegisterPage={isOnRegisterPage}
     >
       <span className="form__title-input">Имя</span>
       <input
