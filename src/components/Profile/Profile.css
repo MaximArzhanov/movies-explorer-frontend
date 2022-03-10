@@ -84,6 +84,7 @@
 
 .profile-form__input:focus {
     transform: scale(1.03);
+    
 }
 
 .profile-form__input_inactive {

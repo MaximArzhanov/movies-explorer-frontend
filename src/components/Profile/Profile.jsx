@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import './Profile.css';
-//import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function Profile(props) {
 
   /** Текущий пользователь */
-  //const currentUser = React.useContext(CurrentUserContext);
+  const currentUser = React.useContext(CurrentUserContext);
 
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -30,10 +30,10 @@ function Profile(props) {
     : 'Редактировать';
 
   /** Записывает информацию о пользователе в стейт-переменные */
-  // React.useEffect(() => {
-  //   setName(currentUser.name);
-  //   setEmail(currentUser.email);
-  // }, [currentUser]);
+  React.useEffect(() => {
+    setName(currentUser.data.name);
+    setEmail(currentUser.data.email);
+  }, [currentUser]);
 
   /** Выполняется логика сохранения данных профиля
    *  или выполняется переход к редактированию профиля */
@@ -45,7 +45,7 @@ function Profile(props) {
 
   /** Отправляет запрос к Api. Сохраняет информацию о пользователе */
   function saveDataProfile() {
-    //props.onEditProfile({ name, email });
+    props.handleUpdateUser({ name, email });
   };
 
   /** Записывает имя пользователя в стейт-переменную */
@@ -58,10 +58,16 @@ function Profile(props) {
     setEmail(evt.target.value);
   }
   
+  /** Выходит из аккаунта */
+  function signOut() {
+    props.handleSignOutClick();
+  }
+
+  console.log(currentUser);
 
   return (
     <div className="profile">
-      <h2 className="profile__title">Привет, Виталий!</h2>
+      <h2 className="profile__title">Привет {currentUser.data.name}</h2>
 
       <form className="profile-form">
 
@@ -76,7 +82,7 @@ function Profile(props) {
             onChange={handleChangeName}
             placeholder="Имя"
           />
-          <span className="profile-form__current-value">Виталий{/*currentUser.name*/}</span>
+          <span className="profile-form__current-value">{currentUser.data.name}</span>
         </div>
 
         <div className="profile-form__container">
@@ -90,7 +96,7 @@ function Profile(props) {
             onChange={handleChangeEmail}
             placeholder="Email"
           />
-          <span className="profile-form__current-value">pochta@yandex.ru{/*currentUser.email*/}</span>
+          <span className="profile-form__current-value">{currentUser.data.email}</span>
         </div>
         
         <span className="profile-form__text-result">При обновлении профиля произошла ошибка</span>
@@ -99,7 +105,7 @@ function Profile(props) {
         </button>
       </form>
 
-      <Link to="/" className={classListLink}>
+      <Link to="/" className={classListLink} onClick={signOut}>
           Выйти из аккаунта
       </Link>
     </div>
