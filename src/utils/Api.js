@@ -26,7 +26,7 @@ class Api {
         email: emailUser
       })
     })
-    .then((res) => { return res.json(); })
+    .then((res) => { return res; })
   }
 
 }

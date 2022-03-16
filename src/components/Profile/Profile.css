@@ -62,9 +62,9 @@
     justify-content: space-between;
 }
 
-.profile-form__container:last-of-type {
+/* .profile-form__container:last-of-type {
     margin-bottom: auto;
-}
+} */
 
 .profile-form__input {
     margin: 0;
@@ -78,16 +78,17 @@
     background-color: #202020;
     border: none;
     outline: none;
-    width: 60%;
+    width: 100%;
     transition: transform 0.2s linear;
 }
 
 .profile-form__input:focus {
-    transform: scale(1.03);
-    
+    transform: scale(1.02);
+    border-bottom: 1px solid #4169e1;
 }
 
 .profile-form__input_inactive {
+    width: 60%;
     pointer-events: none;
 }
 
@@ -125,6 +126,10 @@
     color: #fff;
 }
 
+.profile-form__input_state_error {
+    color: #ee3465;
+}
+
 .profile-form__current-value {
     font-family: 'Inter', Arial, Helvetica, sans-serif;
     font-style: normal;
@@ -138,12 +143,20 @@
     word-wrap: break-word;
 }
 
-.profile-form__input_state_error {
+.profile-form__error-input {
+    margin: 0;
+    margin-top: 5px;
+    padding: 0;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 12px;
     color: #ee3465;
 }
 
 .profile-form__text-result {
-    margin: 20px 0 0 0;
+    margin: auto 0 20px 0;
     padding: 0;
     font-family: 'Inter', Arial, Helvetica, sans-serif;
     font-style: normal;
@@ -152,11 +165,10 @@
     line-height: 13px;
     color: #3ddc84;
     align-self: center;
-    display: none;
 }
 
-.profile-form__text-result_enabled {
-    display: inline-flex;
+.profile-form__text-result_invisible {
+    visibility: hidden;
 }
 
 .profile-form__text-result_type_error {
@@ -164,7 +176,7 @@
 }
 
 .profile-form__button {
-    margin: 20px 0 0 0;
+    margin: 0;
     padding: 0;
     align-self: center;
     font-family: 'Inter', Arial, Helvetica, sans-serif;
@@ -201,10 +213,10 @@
     background-color: rgba(66, 133, 244, .8);
 }
 
-.profile-form__button_inactive {
-    color: rgba(255, 255, 255, .2);
-    background-color: rgba(255, 255, 255, .2);
+.profile-form__button_disabled {
     pointer-events: none;
+    background-color: rgba(248, 248, 248, .4);
+    color: #c2c2c2;
 }
 
 @media screen and (max-width: 1023px) {

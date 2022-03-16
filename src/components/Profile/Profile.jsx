@@ -1,9 +1,12 @@
 import React from 'react';
+import { useCallback } from "react";
 import { Link } from "react-router-dom";
 import './Profile.css';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function Profile(props) {
+
+  const nameRef = React.useRef();
 
   /** Текущий пользователь */
   const currentUser = React.useContext(CurrentUserContext);
@@ -13,9 +16,20 @@ function Profile(props) {
 
   const [isEditProfile, setIsEditProfile] = React.useState(false);
 
-  const classListButton = isEditProfile
-    ? 'profile-form__button profile-form__button_theme_blue'
-    : 'profile-form__button';
+  /** Формирует список классов для кнопки отправки формы */
+  const createClassListButton = () => {
+    if (isEditProfile) {
+      if (props.isLoading) {
+        return 'profile-form__button profile-form__button_theme_blue profile-form__button_disabled';
+      } else {
+        return (isValid
+          ? 'profile-form__button profile-form__button_theme_blue'
+          : 'profile-form__button profile-form__button_theme_blue profile-form__button_disabled');
+      }
+    } else {
+      return 'profile-form__button';
+    }
+  };
 
   const classListLink = isEditProfile
     ? 'profile__link_disabled'
@@ -29,6 +43,10 @@ function Profile(props) {
     ? 'Сохранить'
     : 'Редактировать';
 
+  const classListTextResultFromApi = (props.messageFromApi === 'Информация успешно обновлена')
+    ? 'profile-form__text-result'
+    : 'profile-form__text-result profile-form__text-result_type_error';
+  
   /** Записывает информацию о пользователе в стейт-переменные */
   React.useEffect(() => {
     setName(currentUser.data.name);
@@ -39,8 +57,15 @@ function Profile(props) {
    *  или выполняется переход к редактированию профиля */
   function handleClickButton(evt) {
     evt.preventDefault();
-    if (isEditProfile) { saveDataProfile(); }
-    else { setIsEditProfile(true); }
+    if (isEditProfile) {
+      saveDataProfile();
+      setIsEditProfile(false);
+    }
+    else {
+      nameRef.current.focus();
+      props.resetMessageFromApi();
+      setIsEditProfile(true);
+    }
   };
 
   /** Отправляет запрос к Api. Сохраняет информацию о пользователе */
@@ -51,11 +76,13 @@ function Profile(props) {
   /** Записывает имя пользователя в стейт-переменную */
   function handleChangeName(evt) {
     setName(evt.target.value);
+    handleChange(evt);
   }
 
   /** Записывает email пользователя в стейт-переменную */
   function handleChangeEmail(evt) {
     setEmail(evt.target.value);
+    handleChange(evt);
   }
   
   /** Выходит из аккаунта */
@@ -63,7 +90,36 @@ function Profile(props) {
     props.handleSignOutClick();
   }
 
-  console.log(currentUser);
+  React.useEffect(() => {
+    return () => {
+      resetForm();
+      props.resetMessageFromApi();
+    }
+  }, []);
+
+  /** Валидация полей формы */
+  const [values, setValues] = React.useState({});
+  const [errors, setErrors] = React.useState({});
+  const [isValid, setIsValid] = React.useState(false);
+
+  const handleChange = (event) => {
+    const target = event.target;
+    const name = target.name;
+    const value = target.value;
+    setValues({...values, [name]: value});
+    setErrors({...errors, [name]: target.validationMessage });
+    setIsValid(target.closest("form").checkValidity());
+  };
+
+  const resetForm = useCallback(
+    (newValues = {}, newErrors = {}, newIsValid = false) => {
+      setValues(newValues);
+      setErrors(newErrors);
+      setIsValid(newIsValid);
+    },
+    [setValues, setErrors, setIsValid]
+  );
+
 
   return (
     <div className="profile">
@@ -78,12 +134,18 @@ function Profile(props) {
             type="text"
             name="name"
             required
+            minLength={2}
+            maxLength={30}
             value={name || ""}
             onChange={handleChangeName}
             placeholder="Имя"
+            ref={nameRef}
+            autoComplete="off"
           />
-          <span className="profile-form__current-value">{currentUser.data.name}</span>
+          {!isEditProfile &&
+          <span className="profile-form__current-value">{currentUser.data.name}</span>}
         </div>
+        <span className="profile-form__error-input">{errors.name}</span>
 
         <div className="profile-form__container">
           <input
@@ -95,12 +157,15 @@ function Profile(props) {
             value={email || ""}
             onChange={handleChangeEmail}
             placeholder="Email"
+            autoComplete="off"
           />
-          <span className="profile-form__current-value">{currentUser.data.email}</span>
+          {!isEditProfile &&
+          <span className="profile-form__current-value">{currentUser.data.email}</span>}
         </div>
+        <span className="profile-form__error-input">{errors.email}</span>
         
-        <span className="profile-form__text-result">При обновлении профиля произошла ошибка</span>
-        <button className={classListButton} type="submit" onClick={handleClickButton}>
+        <span className={classListTextResultFromApi}>{props.messageFromApi}</span>
+        <button className={createClassListButton()} type="submit" onClick={handleClickButton}>
           {buttonText}
         </button>
       </form>

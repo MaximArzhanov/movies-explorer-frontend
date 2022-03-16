@@ -18,6 +18,9 @@ function AuthPage(props) {
         name={props.name}
         isOnRegisterPage={props.isOnRegisterPage}
         isOnLoginPage={props.isOnLoginPage}
+        messageFromApi={props.messageFromApi}
+        onFormPage={props.onFormPage}
+        isLoading={props.isLoading}
       >
         {props.children}
       </Form>

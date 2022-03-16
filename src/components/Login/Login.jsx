@@ -19,6 +19,9 @@ function Login(props) {
       linkRoute="/signup"
       onSubmit={props.handleUserAuthorization}
       isOnLoginPage={isOnLoginPage}
+      messageFromApi={props.messageFromApi}
+      onFormPage={props.onFormPage}
+      isLoading={props.isLoading}
     />
   );
 }

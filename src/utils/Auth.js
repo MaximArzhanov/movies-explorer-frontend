@@ -17,7 +17,15 @@ class Auth {
         password: password
       })
     })
-    .then((res) => { return res.json(); })
+    .then((res) => { return res; })
+    // .then((res) => { 
+    //   if (res.ok) {
+    //     return res.json();
+    //   } else {
+    //     // res.json().then((data) => { return Promise.reject(data.message) });
+    //     return Promise.reject()
+    //   }
+    // })
   };
 
   authorization(email, password) {
@@ -31,10 +39,10 @@ class Auth {
         password: password
       })
     })
-    .then((res) => { return res.json(); })
+    .then((res) => { return res; })
   };
 
-  checkToken(jwt) {
+  getContent(jwt) {
     return fetch(`${this._baseUrl}users/me`, {
       method: 'GET',
       headers: {

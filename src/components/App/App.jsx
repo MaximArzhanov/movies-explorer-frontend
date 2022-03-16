@@ -18,7 +18,7 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
 function App() {
 
-  const history = useHistory(); 
+  const history = useHistory();
 
   /** Текущий пользователь */
   const [currentUser, setCurrentUser] = React.useState({});
@@ -29,18 +29,47 @@ function App() {
   /** Состояние авторизации */
   const [loggedIn, setLoggedIn] = React.useState(false);
 
+  /** Сообщение от сервера ApiMoviesExplorer */
+  const [messageFromApi, setMessageFromApi] = React.useState('');
+
+  function resetMessageFromApi() {
+    setMessageFromApi('');
+  }
+
+   /** Текущий пользователь */
+   const [isLoading, setIsLoading] = React.useState(false);
+
+  function onFormPage() {
+    setMessageFromApi('');
+  }
+
   /** Если пользователь на главной странице (Main) то включается синяя тема для Header */
   function onLandingPage(state) {
     setHeaderThemeBlue(state);
   }
 
+  /** Запрашивает информацию о пользователе */
+  function getUserInfo() {
+    const jwt = localStorage.getItem("jwt");
+    api.getUserInformation(jwt)
+      .then((data) => {
+        setCurrentUser(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
   /** Проверяет наличие и актуальность токена */
-  function tokenCheck() {
+  function checkToken() {
     if (localStorage.getItem("jwt")) {
       const jwt = localStorage.getItem("jwt");
-      auth.checkToken(jwt)
+      auth.getContent(jwt)
         .then(() => {
+          getUserInfo();
           setLoggedIn(true);
+          setMessageFromApi('');
+          history.push('/movies');
         })
         .catch((err) => {
           console.error(err);
@@ -50,65 +79,109 @@ function App() {
 
   /** Проверяет наличие и актуальность токена при загрузке приложения */
   React.useEffect(() => {
-    tokenCheck();
+    checkToken();
   }, []);
+
+  function returnMessageFromApi(data) {
+    try { // Если приходит ошибка валидации от Celebrate/Joi
+      if (data.validation.body.message) {
+        return Promise.reject(data.validation.body.message);
+      }
+    }
+    catch (err) {
+      if (data.message) {
+        return Promise.reject(data.message);
+      }
+    }
+  }
 
   /** Обработчик авторизации пользователя */
   function handleUserAuthorization(email, password) {
+    setIsLoading(true);
     auth.authorization(email, password)
-      .then((data) => {
-        console.log(data);
-        setLoggedIn(true);
-        localStorage.setItem("jwt", data.jwt);
-        history.push('/movies');
+      .then((res) => {
+        if (res.ok) { // Если ответ пришёл без ошибки
+          res.json()
+            .then((data) => {
+              setLoggedIn(true);
+              localStorage.setItem("jwt", data.jwt);
+              getUserInfo();
+              history.push('/movies');
+            })
+            .catch((err) => { console.error(err); });
+        }
+        else { // Если ответ пришёл с ошибкой
+          res.json()
+            .then((data) => {
+              returnMessageFromApi(data)
+                .catch((err) => {
+                  console.error(err);
+                  setMessageFromApi(err);
+                });
+            })
+            .catch((err) => { console.error(err); });
+        }
       })
-      .catch((err) => {
-        console.error(err);
-      })
+      .catch((err) => { console.error(err); })
+      .finally(() => { setIsLoading(false); });
   }
 
   /** Обработчик регистрации пользователя */
   function handleUserRegister(name, email, password) {
+    setIsLoading(true);
     auth.register(name, email, password)
-      .then((data) => {
-        console.log(data.message);
-        handleUserAuthorization(email, password);
+      .then((res) => {
+        if (res.ok) { // Если ответ пришёл без ошибки
+          res.json()
+            .then((data) => { handleUserAuthorization(email, password); })
+            .catch((err) => { console.error(err); });
+        }
+        else { // Если ответ пришёл с ошибкой
+          res.json()
+            .then((data) => {
+              returnMessageFromApi(data)
+                .catch((err) => {
+                  console.error(err);
+                  setMessageFromApi(err);
+                });
+            })
+            .catch((err) => { console.error(err); });
+        }
       })
-      .catch((err) => {
-        console.error(err);
-      })
-  }
-
-  /** Запрашивает информацию о пользователе */
-  function getUserInfo() {
-    const jwt = localStorage.getItem("jwt");
-    api.getUserInformation(jwt)
-      .then((data) => {
-        console.log(data);
-        setCurrentUser(data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch((err) => { console.error(err); })
+      .finally(() => { setIsLoading(false); });
   }
 
   /** Обновляет информацию о пользователе */
   function handleUpdateUser({ name, email }) {
     const jwt = localStorage.getItem("jwt");
+    setIsLoading(true);
     api.updateUserInformation(name, email, jwt)
-      .then((userInfo) => {
-        console.log(userInfo.data);
-        setCurrentUser(userInfo);
-      })
-      .catch((err) => {
-        console.error(err);
-      })
+    .then((res) => {
+      if (res.ok) { // Если ответ пришёл без ошибки
+        res.json()
+          .then((data) => {
+            setCurrentUser(data);
+            setMessageFromApi('Информация успешно обновлена');
+          })
+          .catch((err) => { console.error(err); });
+      }
+      else { // Если ответ пришёл с ошибкой
+        console.log(res);
+        res.json()
+          .then((data) => {
+            returnMessageFromApi(data)
+              .catch((err) => {
+                console.error(err);
+                setMessageFromApi(err);
+              });
+          })
+          .catch((err) => { console.error(err); });
+      }
+    })
+    .catch((err) => { console.error(err); })
+    .finally(() => { setIsLoading(false); });
   }
-
-  /** Запрашивает информацию о пользователе при загрузке страницы */
-  React.useEffect(() => {
-    getUserInfo();
-  }, []);
 
   /** Выходит из аккаунта. Удаляет токен */
   function handleSignOutClick() {
@@ -116,8 +189,6 @@ function App() {
     setLoggedIn(false);
     history.push('/');
   }
-
-  // console.log(loggedIn);
 
   return (
     <div className="app">
@@ -138,6 +209,7 @@ function App() {
               headerThemeBlue={headerThemeBlue}
             />
             <ProtectedRoute
+              path="/movies"
               loggedIn={loggedIn}
               moviesCardListIsFull={true}
               component={Movies}
@@ -151,6 +223,7 @@ function App() {
               headerThemeBlue={headerThemeBlue}
             />
             <ProtectedRoute
+              path="/saved-movies"
               loggedIn={loggedIn}
               moviesCardListIsFull={true}
               component={SavedMovies}
@@ -164,22 +237,33 @@ function App() {
               headerThemeBlue={headerThemeBlue}
             />
             <ProtectedRoute
+              path="/profile"
               loggedIn={loggedIn}
               component={Profile}
               handleUpdateUser={handleUpdateUser}
               handleSignOutClick={handleSignOutClick}
+              getUserInfo={getUserInfo}
+              messageFromApi={messageFromApi}
+              isLoading={isLoading}
+              resetMessageFromApi={resetMessageFromApi}
             />
           </Route>
 
           <Route path="/signin">
             <Login
               handleUserAuthorization={handleUserAuthorization}
+              messageFromApi={messageFromApi}
+              onFormPage={onFormPage}
+              isLoading={isLoading}
             />
           </Route>
 
           <Route path="/signup">
             <Register
               handleUserRegister={handleUserRegister}
+              messageFromApi={messageFromApi}
+              onFormPage={onFormPage}
+              isLoading={isLoading}
             />
           </Route>
 
