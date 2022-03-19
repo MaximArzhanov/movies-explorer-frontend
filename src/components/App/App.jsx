@@ -16,7 +16,6 @@ import moviesApi from '../../utils/MoviesApi';
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-import { Error } from 'mongoose';
 
 function App() {
 
@@ -34,8 +33,18 @@ function App() {
   /** Сообщение от сервера ApiMoviesExplorer */
   const [messageFromApi, setMessageFromApi] = React.useState('');
 
-  /** Массив загруженных фильмов (c api beatfilm-movies) */
-  const [movies, setMovies] = React.useState([]);
+  /** Массив всех загруженных фильмов (c api beatfilm-movies) */
+  const [allMovies, setAllMovies] = React.useState([]);
+
+  /** Массив всех загруженных фильмов (c api beatfilm-movies) */
+  const [filteredMovies, setFilteredMovies] = React.useState([]);
+
+  /** Если ранее выполнялся поиск фильма, то при открытии страницы будут отражены
+   *  результаты последнего поиска
+   */
+  function onMoviesPage(data) {
+    setFilteredMovies(data);
+  }
 
   function resetMessageFromApi() {
     setMessageFromApi('');
@@ -194,15 +203,26 @@ function App() {
     history.push('/');
   }
 
-  function getMoviesFromBeatfilmApi() {
+  function getMoviesFromBeatfilmApi(keyWord) {
+    setIsLoading(true);
     moviesApi.getBeatfilmMovies()
       .then((data) => {
-        setMovies(data);
+        setAllMovies(data);
+        filterMovies(data, keyWord)
       })
       .catch((err) => {
-        setMessageFromApi('Неизвестная ошибка');
+        setMessageFromApi('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
         console.log(err);
-      });
+      })
+      .finally(() => { setIsLoading(false); });
+  }
+
+  function filterMovies(allMovies, keyWord) {
+    const arrayMovies = allMovies.filter((movie) => {
+      return (movie.nameRU.toUpperCase().includes(keyWord.toUpperCase()));
+    })
+    localStorage.setItem("filteredMovies", JSON.stringify(arrayMovies));
+    setFilteredMovies(arrayMovies);
   }
 
   return (
@@ -230,8 +250,9 @@ function App() {
               component={Movies}
               isLoading={isLoading}
               getMoviesFromBeatfilmApi={getMoviesFromBeatfilmApi}
-              movies={movies}
+              filteredMovies={filteredMovies}
               messageFromApi={messageFromApi}
+              onMoviesPage={onMoviesPage}
             />
             <Footer />
           </Route>

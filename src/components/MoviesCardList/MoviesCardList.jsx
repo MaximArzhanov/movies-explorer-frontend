@@ -1,25 +1,25 @@
 import React from 'react';
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard'
-import Preloader from '../Preloader/Preloader'
+import ButtonLoadMore from '../ButtonLoadMore/ButtonLoadMore'
 
 function MoviesCardList(props) {
 
+  const [moviesCardListIsFull, setMoviesCardListIsFull] = React.useState(false);
+
   return (
-    
-    props.isLoading
-    ? <>
-        <Preloader />
-      </>
-    : <ul className="movies-card-list">
+    <>
+      <ul className="movies-card-list">
         {/* <MoviesCard buttonContent={props.buttonContent}/> */}
-        {props.movies.map(({ ...movie }) => (
+        {props.filteredMovies.map(({ ...movie }) => (
             <MoviesCard
               key={movie.id}
               movie={{ ...movie }}
             ></MoviesCard>
           ))}
       </ul>
+      { moviesCardListIsFull && <ButtonLoadMore /> }
+    </>
   );
 }
 

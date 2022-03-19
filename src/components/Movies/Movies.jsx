@@ -2,11 +2,19 @@ import React from 'react';
 import './Movies.css';
 import SearchForm from '../SearchForm/SearchForm'
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import ButtonLoadMore from '../ButtonLoadMore/ButtonLoadMore'
+import Preloader from '../Preloader/Preloader'
 
 function Movies(props) {
 
-  const [moviesCardListIsFull, setMoviesCardListIsFull] = React.useState(false);
+  /** Если ранее выполнялся поиск фильма, то при открытии страницы будут отражены
+   *  результаты последнего поиска
+   */
+  React.useEffect(() => {
+    const filteredMovies = JSON.parse(localStorage.getItem("filteredMovies"));
+    if (filteredMovies.length !== 0) {
+      props.onMoviesPage(filteredMovies);
+    }
+  }, []);
 
   return (
     <section className="movies">
@@ -14,8 +22,12 @@ function Movies(props) {
         getMoviesFromBeatfilmApi={props.getMoviesFromBeatfilmApi}
         messageFromApi={props.messageFromApi}
       />
-      <MoviesCardList isLoading={props.isLoading} movies={props.movies}/>
-      { moviesCardListIsFull && <ButtonLoadMore /> }
+      {
+        props.isLoading
+          ? <Preloader />
+          : <MoviesCardList filteredMovies={props.filteredMovies}/>
+      }
+      
     </section>
   );
 }

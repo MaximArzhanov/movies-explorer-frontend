@@ -12,6 +12,10 @@ function SearchForm(props) {
 
   const [checkboxOnlyShortMovies, setcheckboxOnlyShortMovies] = React.useState(false);
 
+  function searchMovies() {
+
+  }
+
   /** Записывает значение чекбокса в стейт-переменную */
   function handleChangeCheckbox(e) {
     setcheckboxOnlyShortMovies(e.target.checked);
@@ -24,10 +28,11 @@ function SearchForm(props) {
   function handleSubmit(e) {
     e.preventDefault();
     if (checkValidation()) {
-      props.getMoviesFromBeatfilmApi();
+      props.getMoviesFromBeatfilmApi(keyWordRef.current.value);
     }
   }
 
+  /** Проверяет валидность поля (На наличие текста) */
   function checkValidation() {
     if (keyWordRef.current.value === '') {
       setError('Нужно ввести ключевое слово');
