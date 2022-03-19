@@ -199,27 +199,51 @@ function App() {
   function handleSignOutClick() {
     localStorage.removeItem("jwt");
     localStorage.removeItem("filteredMovies");
+    localStorage.removeItem("allMovies");
     setLoggedIn(false);
     history.push('/');
   }
 
-  function getMoviesFromBeatfilmApi(keyWord) {
-    setIsLoading(true);
-    moviesApi.getBeatfilmMovies()
-      .then((data) => {
-        filterMovies(data, keyWord)
-      })
-      .catch((err) => {
-        setMessageFromApi('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
-        console.log(err);
-      })
-      .finally(() => { setIsLoading(false); });
+  function getMoviesFromBeatfilmApi(keyWord, checkboxOnlyShortMovies) {
+    if (localStorage.getItem('allMovies')) { // Если ранее выполнялся запрос к АPI
+      filterMovies(
+        JSON.parse(localStorage.getItem('allMovies')),
+        keyWord,
+        checkboxOnlyShortMovies
+      )
+    } else {
+      setIsLoading(true);
+      moviesApi.getBeatfilmMovies()
+        .then((data) => {
+          localStorage.setItem("allMovies", JSON.stringify(data));
+          filterMovies(data, keyWord, checkboxOnlyShortMovies)
+        })
+        .catch((err) => {
+          setMessageFromApi('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
+          console.log(err);
+        })
+        .finally(() => { setIsLoading(false); });
+    }
   }
 
-  function filterMovies(allMovies, keyWord) {
-    const arrayMovies = allMovies.filter((movie) => {
-      return (movie.nameRU.toUpperCase().includes(keyWord.toUpperCase()));
-    })
+  function filterMovies(allMovies, keyWord, checkboxOnlyShortMovies) {
+    let arrayMovies = [];
+
+    if (keyWord === '*') { // Если введён символ "*", то отображаются все фильмы
+      arrayMovies = checkboxOnlyShortMovies
+        ? allMovies.filter((movie) => { return (movie.duration < 40); })
+        : allMovies;
+    }
+    else {
+      arrayMovies = checkboxOnlyShortMovies
+        ? allMovies.filter((movie) => {
+          return (movie.duration < 40 && movie.nameRU.toUpperCase().includes(keyWord.toUpperCase()));
+        })
+        : allMovies.filter((movie) => {
+          return (movie.nameRU.toUpperCase().includes(keyWord.toUpperCase()));
+        })
+    }
+
     if (arrayMovies.length !== 0) { setIsMoviesWereFound(true); }
     else { setIsMoviesWereFound(false); }
     localStorage.setItem("filteredMovies", JSON.stringify(arrayMovies));

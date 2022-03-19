@@ -28,7 +28,7 @@ function SearchForm(props) {
   function handleSubmit(e) {
     e.preventDefault();
     if (checkValidation()) {
-      props.getMoviesFromBeatfilmApi(keyWordRef.current.value);
+      props.getMoviesFromBeatfilmApi(keyWordRef.current.value, checkboxOnlyShortMovies);
     }
   }
 
