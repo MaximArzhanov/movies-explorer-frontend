@@ -11,8 +11,12 @@ function Movies(props) {
    */
   React.useEffect(() => {
     const filteredMovies = JSON.parse(localStorage.getItem("filteredMovies"));
-    if (filteredMovies.length !== 0) {
-      props.onMoviesPage(filteredMovies);
+    if (filteredMovies) {
+      if (filteredMovies.length !== 0) {
+        props.onMoviesPage(filteredMovies);
+      }
+    } else {
+      props.onMoviesPage([]);
     }
   }, []);
 
@@ -25,7 +29,9 @@ function Movies(props) {
       {
         props.isLoading
           ? <Preloader />
-          : <MoviesCardList filteredMovies={props.filteredMovies}/>
+          : (props.isMoviesWereFound
+              ? <MoviesCardList filteredMovies={props.filteredMovies}/>
+              : <p className="movies__message">Ничего не найдено</p>)
       }
       
     </section>

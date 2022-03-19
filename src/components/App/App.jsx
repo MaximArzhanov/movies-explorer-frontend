@@ -34,10 +34,9 @@ function App() {
   const [messageFromApi, setMessageFromApi] = React.useState('');
 
   /** Массив всех загруженных фильмов (c api beatfilm-movies) */
-  const [allMovies, setAllMovies] = React.useState([]);
-
-  /** Массив всех загруженных фильмов (c api beatfilm-movies) */
   const [filteredMovies, setFilteredMovies] = React.useState([]);
+
+  const [isMoviesWereFound, setIsMoviesWereFound] = React.useState(true);
 
   /** Если ранее выполнялся поиск фильма, то при открытии страницы будут отражены
    *  результаты последнего поиска
@@ -199,6 +198,7 @@ function App() {
   /** Выходит из аккаунта. Удаляет токен */
   function handleSignOutClick() {
     localStorage.removeItem("jwt");
+    localStorage.removeItem("filteredMovies");
     setLoggedIn(false);
     history.push('/');
   }
@@ -207,7 +207,6 @@ function App() {
     setIsLoading(true);
     moviesApi.getBeatfilmMovies()
       .then((data) => {
-        setAllMovies(data);
         filterMovies(data, keyWord)
       })
       .catch((err) => {
@@ -221,6 +220,8 @@ function App() {
     const arrayMovies = allMovies.filter((movie) => {
       return (movie.nameRU.toUpperCase().includes(keyWord.toUpperCase()));
     })
+    if (arrayMovies.length !== 0) { setIsMoviesWereFound(true); }
+    else { setIsMoviesWereFound(false); }
     localStorage.setItem("filteredMovies", JSON.stringify(arrayMovies));
     setFilteredMovies(arrayMovies);
   }
@@ -253,6 +254,7 @@ function App() {
               filteredMovies={filteredMovies}
               messageFromApi={messageFromApi}
               onMoviesPage={onMoviesPage}
+              isMoviesWereFound={isMoviesWereFound}
             />
             <Footer />
           </Route>
