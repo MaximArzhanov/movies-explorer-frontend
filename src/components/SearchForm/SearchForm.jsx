@@ -57,6 +57,7 @@ function SearchForm(props) {
               name="name"
               placeholder="Фильм"
               ref={keyWordRef}
+              autoComplete="off"
             />
           </label>
           

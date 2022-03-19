@@ -38,6 +38,10 @@ function App() {
 
   const [isMoviesWereFound, setIsMoviesWereFound] = React.useState(true);
 
+  function resetMoviesWereFound() {
+    setIsMoviesWereFound(true);
+  }
+
   /** Если ранее выполнялся поиск фильма, то при открытии страницы будут отражены
    *  результаты последнего поиска
    */
@@ -278,6 +282,7 @@ function App() {
               filteredMovies={filteredMovies}
               messageFromApi={messageFromApi}
               onMoviesPage={onMoviesPage}
+              resetMoviesWereFound={resetMoviesWereFound}
               isMoviesWereFound={isMoviesWereFound}
             />
             <Footer />

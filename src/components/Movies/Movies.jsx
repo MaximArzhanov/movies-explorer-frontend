@@ -18,6 +18,10 @@ function Movies(props) {
     } else {
       props.onMoviesPage([]);
     }
+
+    return () => {
+      props.resetMoviesWereFound();
+    }
   }, []);
 
   return (
@@ -29,9 +33,10 @@ function Movies(props) {
       {
         props.isLoading
           ? <Preloader />
-          : (props.isMoviesWereFound
-              ? <MoviesCardList filteredMovies={props.filteredMovies}/>
-              : <p className="movies__message">Ничего не найдено</p>)
+          : <>
+              <MoviesCardList filteredMovies={props.filteredMovies}/>
+              <p className="movies__message">{props.isMoviesWereFound || 'Ничего не найдено'}</p>
+            </>
       }
       
     </section>
