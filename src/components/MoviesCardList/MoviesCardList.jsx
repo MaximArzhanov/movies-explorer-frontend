@@ -12,18 +12,13 @@ function MoviesCardList(props) {
         <Preloader />
       </>
     : <ul className="movies-card-list">
-        <MoviesCard buttonContent={props.buttonContent}/>
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
+        {/* <MoviesCard buttonContent={props.buttonContent}/> */}
+        {props.movies.map(({ ...movie }) => (
+            <MoviesCard
+              key={movie.id}
+              movie={{ ...movie }}
+            ></MoviesCard>
+          ))}
       </ul>
   );
 }

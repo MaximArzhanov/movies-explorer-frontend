@@ -6,11 +6,16 @@ import ButtonLoadMore from '../ButtonLoadMore/ButtonLoadMore'
 
 function Movies(props) {
 
+  const [moviesCardListIsFull, setMoviesCardListIsFull] = React.useState(false);
+
   return (
     <section className="movies">
-      <SearchForm />
-      <MoviesCardList isLoading={false}/>
-      { props.moviesCardListIsFull && <ButtonLoadMore /> }
+      <SearchForm
+        getMoviesFromBeatfilmApi={props.getMoviesFromBeatfilmApi}
+        messageFromApi={props.messageFromApi}
+      />
+      <MoviesCardList isLoading={props.isLoading} movies={props.movies}/>
+      { moviesCardListIsFull && <ButtonLoadMore /> }
     </section>
   );
 }

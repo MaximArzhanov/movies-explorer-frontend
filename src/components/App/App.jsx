@@ -11,10 +11,12 @@ import Profile from '../Profile/Profile'
 import Footer from '../Footer/Footer';
 import PageNotFound from '../PageNotFound/PageNotFound';
 import auth from "../../utils/Auth";
-import api from '../../utils/Api';
+import mainApi from '../../utils/MainApi';
+import moviesApi from '../../utils/MoviesApi';
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import { Error } from 'mongoose';
 
 function App() {
 
@@ -31,6 +33,9 @@ function App() {
 
   /** Сообщение от сервера ApiMoviesExplorer */
   const [messageFromApi, setMessageFromApi] = React.useState('');
+
+  /** Массив загруженных фильмов (c api beatfilm-movies) */
+  const [movies, setMovies] = React.useState([]);
 
   function resetMessageFromApi() {
     setMessageFromApi('');
@@ -51,7 +56,7 @@ function App() {
   /** Запрашивает информацию о пользователе */
   function getUserInfo() {
     const jwt = localStorage.getItem("jwt");
-    api.getUserInformation(jwt)
+    mainApi.getUserInformation(jwt)
       .then((data) => {
         setCurrentUser(data);
       })
@@ -156,7 +161,7 @@ function App() {
   function handleUpdateUser({ name, email }) {
     const jwt = localStorage.getItem("jwt");
     setIsLoading(true);
-    api.updateUserInformation(name, email, jwt)
+    mainApi.updateUserInformation(name, email, jwt)
     .then((res) => {
       if (res.ok) { // Если ответ пришёл без ошибки
         res.json()
@@ -167,7 +172,6 @@ function App() {
           .catch((err) => { console.error(err); });
       }
       else { // Если ответ пришёл с ошибкой
-        console.log(res);
         res.json()
           .then((data) => {
             returnMessageFromApi(data)
@@ -188,6 +192,17 @@ function App() {
     localStorage.removeItem("jwt");
     setLoggedIn(false);
     history.push('/');
+  }
+
+  function getMoviesFromBeatfilmApi() {
+    moviesApi.getBeatfilmMovies()
+      .then((data) => {
+        setMovies(data);
+      })
+      .catch((err) => {
+        setMessageFromApi('Неизвестная ошибка');
+        console.log(err);
+      });
   }
 
   return (
@@ -213,6 +228,10 @@ function App() {
               loggedIn={loggedIn}
               moviesCardListIsFull={true}
               component={Movies}
+              isLoading={isLoading}
+              getMoviesFromBeatfilmApi={getMoviesFromBeatfilmApi}
+              movies={movies}
+              messageFromApi={messageFromApi}
             />
             <Footer />
           </Route>

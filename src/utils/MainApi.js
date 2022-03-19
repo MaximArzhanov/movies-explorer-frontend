@@ -1,6 +1,6 @@
 import { baseUrlMoviesExplorerApi } from './constants.js';
 
-class Api {
+class MainApi {
   constructor(baseUrlMoviesExplorerApi) {
     this._baseUrl = baseUrlMoviesExplorerApi;
   }
@@ -31,5 +31,5 @@ class Api {
 
 }
 
-const api = new Api(baseUrlMoviesExplorerApi);
-export default api;
+const mainApi = new MainApi(baseUrlMoviesExplorerApi);
+export default mainApi;
