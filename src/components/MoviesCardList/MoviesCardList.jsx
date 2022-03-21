@@ -7,6 +7,13 @@ function MoviesCardList(props) {
 
   const [moviesCardListIsFull, setMoviesCardListIsFull] = React.useState(false);
 
+  function test(movie) {
+    
+    // return props.savedMovies.some((item) => {
+    //   return (item.movieId === movie.id && item.owner === currentUser.data._id);
+    // });
+  }
+
   return (
     <>
       <ul className="movies-card-list">
@@ -15,6 +22,10 @@ function MoviesCardList(props) {
             <MoviesCard
               key={movie.id}
               movie={{ ...movie }}
+              handleMovieSave={props.handleMovieSave}
+              // savedMovie={props.savedMovie}
+              savedMovies={props.savedMovies}
+              // isMovieSaved={test({ ...movie })}
             ></MoviesCard>
           ))}
       </ul>

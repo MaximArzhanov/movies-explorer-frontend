@@ -11,7 +11,7 @@ class MainApi {
         "Authorization" : `Bearer ${jwt}`,
       }
     })
-    .then((res) => { return res.json(); })
+    .then((res) => { return res; })
   }
 
   updateUserInformation(nameUser, emailUser, jwt) {
@@ -27,6 +27,28 @@ class MainApi {
       })
     })
     .then((res) => { return res; })
+  }
+
+  getMovies(jwt) {
+    return fetch(`${this._baseUrl}movies`, {
+      headers: {
+        "Authorization" : `Bearer ${jwt}`,
+      }
+    })
+    .then((res) => { return res })
+  }
+
+  /** Сохраняет фильм в базе данных */
+  saveMovie(movie, jwt) {
+    return fetch(`${this._baseUrl}movies`, {
+      method: 'POST',
+      headers: {
+        "Authorization" : `Bearer ${jwt}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(movie)
+    })
+    .then((res) => { return res })
   }
 
 }

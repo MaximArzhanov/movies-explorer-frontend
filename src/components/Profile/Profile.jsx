@@ -49,8 +49,8 @@ function Profile(props) {
   
   /** Записывает информацию о пользователе в стейт-переменные */
   React.useEffect(() => {
-    setName(currentUser.data.name);
-    setEmail(currentUser.data.email);
+    setName(currentUser.name);
+    setEmail(currentUser.email);
   }, [currentUser]);
 
   /** Выполняется логика сохранения данных профиля
@@ -120,10 +120,11 @@ function Profile(props) {
     [setValues, setErrors, setIsValid]
   );
 
+  console.log(currentUser);
 
   return (
     <div className="profile">
-      <h2 className="profile__title">Привет {currentUser.data.name}</h2>
+      <h2 className="profile__title">Привет {currentUser.name}</h2>
 
       <form className="profile-form">
 
@@ -143,7 +144,7 @@ function Profile(props) {
             autoComplete="off"
           />
           {!isEditProfile &&
-          <span className="profile-form__current-value">{currentUser.data.name}</span>}
+          <span className="profile-form__current-value">{currentUser.name}</span>}
         </div>
         <span className="profile-form__error-input">{errors.name}</span>
 
@@ -160,7 +161,7 @@ function Profile(props) {
             autoComplete="off"
           />
           {!isEditProfile &&
-          <span className="profile-form__current-value">{currentUser.data.email}</span>}
+          <span className="profile-form__current-value">{currentUser.email}</span>}
         </div>
         <span className="profile-form__error-input">{errors.email}</span>
         

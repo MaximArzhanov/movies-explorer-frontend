@@ -19,7 +19,7 @@ function Movies(props) {
       props.onMoviesPage([]);
     }
 
-    return () => {
+    return () => { // Удаление текста ошибки "Ничего не найдено"
       props.resetMoviesWereFound();
     }
   }, []);
@@ -34,7 +34,12 @@ function Movies(props) {
         props.isLoading
           ? <Preloader />
           : <>
-              <MoviesCardList filteredMovies={props.filteredMovies}/>
+              <MoviesCardList
+                filteredMovies={props.filteredMovies}
+                handleMovieSave={props.handleMovieSave}
+                savedMovies={props.savedMovies}
+                // savedMovie={props.savedMovie}
+              />
               <p className="movies__message">{props.isMoviesWereFound || 'Ничего не найдено'}</p>
             </>
       }

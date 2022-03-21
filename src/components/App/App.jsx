@@ -14,6 +14,7 @@ import auth from "../../utils/Auth";
 import mainApi from '../../utils/MainApi';
 import moviesApi from '../../utils/MoviesApi';
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import { baseUrlMoviesExplorerApi } from '../../utils/constants';
 
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
@@ -33,8 +34,14 @@ function App() {
   /** Сообщение от сервера ApiMoviesExplorer */
   const [messageFromApi, setMessageFromApi] = React.useState('');
 
-  /** Массив всех загруженных фильмов (c api beatfilm-movies) */
+  /** Массив найденных, при запросе, фильмов (c api beatfilm-movies) */
   const [filteredMovies, setFilteredMovies] = React.useState([]);
+
+  /** Массив сохранённых фильмов */
+  const [savedMovies, setSavedMovies] = React.useState([]);
+
+  /** Массив сохранённых фильмов */
+  const [savedMovie, setSavedMovie] = React.useState({});
 
   const [isMoviesWereFound, setIsMoviesWereFound] = React.useState(true);
 
@@ -66,16 +73,16 @@ function App() {
   }
 
   /** Запрашивает информацию о пользователе */
-  function getUserInfo() {
-    const jwt = localStorage.getItem("jwt");
-    mainApi.getUserInformation(jwt)
-      .then((data) => {
-        setCurrentUser(data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }
+  // function getUserInfo() {
+  //   const jwt = localStorage.getItem("jwt");
+  //   mainApi.getUserInformation(jwt)
+  //     .then((data) => {
+  //       setCurrentUser(data);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //     });
+  // }
 
   /** Проверяет наличие и актуальность токена */
   function checkToken() {
@@ -83,7 +90,8 @@ function App() {
       const jwt = localStorage.getItem("jwt");
       auth.getContent(jwt)
         .then(() => {
-          getUserInfo();
+          // getUserInfo();
+          getData();
           setLoggedIn(true);
           setMessageFromApi('');
           history.push('/movies');
@@ -93,6 +101,52 @@ function App() {
         });
     }
   }
+
+  /** Запрашивает карточки и информацию о пользователе */
+  function getData() {
+    const jwt = localStorage.getItem("jwt");
+    Promise.all(
+      [
+        mainApi.getUserInformation(jwt),
+        mainApi.getMovies(jwt)
+      ])
+      .then((res) => {
+        if (res[0].ok && res[1].ok) { // Если ответ пришёл без ошибки
+          res[0].json()
+            .then((data) => { setCurrentUser(data.data); })
+            .catch((err) => { console.error(err); });
+          res[1].json()
+            // .then((data) => { setSavedMovies(findMoviesCreatedByCurrentUser(data.data)); })
+            .then((data) => { setSavedMovies(data.data); })
+            .catch((err) => { console.error(err); });
+        }
+        else { // Если ответ пришёл с ошибкой
+          res[0].json()
+            .then((data) => {
+              returnMessageFromApi(data)
+                .catch((err) => {
+                  console.error(err);
+                });
+            })
+            .catch((err) => { console.error(err); });
+          res[1].json()
+            .then((data) => {
+              returnMessageFromApi(data)
+                .catch((err) => {
+                  console.error(err);
+                });
+            })
+            .catch((err) => { console.error(err); });
+        }
+      })
+      .catch((err) => { console.error(err); })
+  }
+
+  /** При обновлении currentUser обновляет массив savedMovies
+   * (оставляет только карточки созданные текущим пользователем) */
+  // React.useEffect(() => {
+  //   setSavedMovies(findMoviesCreatedByCurrentUser(savedMovies));
+  // }, [currentUser]);
 
   /** Проверяет наличие и актуальность токена при загрузке приложения */
   React.useEffect(() => {
@@ -122,7 +176,8 @@ function App() {
             .then((data) => {
               setLoggedIn(true);
               localStorage.setItem("jwt", data.jwt);
-              getUserInfo();
+              // getUserInfo();
+              getData();
               history.push('/movies');
             })
             .catch((err) => { console.error(err); });
@@ -204,10 +259,12 @@ function App() {
     localStorage.removeItem("jwt");
     localStorage.removeItem("filteredMovies");
     localStorage.removeItem("allMovies");
+    setFilteredMovies([]);
     setLoggedIn(false);
     history.push('/');
   }
 
+  /** Запрашивает фильмы с Api BeatFilm */
   function getMoviesFromBeatfilmApi(keyWord, checkboxOnlyShortMovies) {
     if (localStorage.getItem('allMovies')) { // Если ранее выполнялся запрос к АPI
       filterMovies(
@@ -224,12 +281,81 @@ function App() {
         })
         .catch((err) => {
           setMessageFromApi('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
-          console.log(err);
+          console.error(err);
         })
         .finally(() => { setIsLoading(false); });
     }
   }
 
+  function findMoviesCreatedByCurrentUser(movies) {
+    console.log(movies);
+    const moviesOfCurrentUser = movies.filter(movie => movie.owner === currentUser._id);
+    return moviesOfCurrentUser;
+  }
+
+  /** Запрос сохранённых фильмов */
+  function getSavedMoviesFromMainApi() {
+    const jwt = localStorage.getItem("jwt");
+    mainApi.getMovies(jwt)
+      .then((res) => {
+        if (res.ok) { // Если ответ пришёл без ошибки
+          res.json()
+            .then((data) => {
+              setSavedMovies(findMoviesCreatedByCurrentUser(data.data));
+            })
+            .catch((err) => { console.error(err); });
+        }
+        else { // Если ответ пришёл с ошибкой
+          res.json()
+            .then((data) => {
+              returnMessageFromApi(data)
+                .catch((err) => {
+                  console.error(err);
+                });
+            })
+            .catch((err) => { console.error(err); });
+        }
+      })
+      .catch((err) => { console.error(err); })
+  }
+
+  /** Подготавливает объект для отправки запроса */
+  function prepareMovieObject({...movie}) {
+    const image = baseUrlMoviesExplorerApi.slice(0, -1) + movie.image.url;
+    const country = movie.country ? movie.country : 'Нет информации';
+    const movieId = movie.id;
+    const thumbnail = image;
+    delete movie.id;
+    delete movie.created_at;
+    delete movie.updated_at;
+    return {...movie, image, thumbnail, country, movieId};
+  }
+  
+  /** Отправляет запрос на сохранение карточки с фильмом */
+  function handleMovieSave(movie) {
+    const jwt = localStorage.getItem("jwt");
+    mainApi.saveMovie(prepareMovieObject(movie), jwt)
+      .then((res) => {
+        if (res.ok) { // Если ответ пришёл без ошибки
+          res.json()
+            .then((newMovie) => {
+              setSavedMovies([...savedMovies, newMovie.data])
+            })
+            .catch((err) => { console.error(err); });
+        }
+        else { // Если ответ пришёл с ошибкой
+          res.json()
+            .then((data) => {
+              returnMessageFromApi(data)
+                .catch((err) => { console.error(err); });
+            })
+            .catch((err) => { console.error(err); });
+        }
+      })
+      .catch((err) => { console.error(err); });
+  }
+
+  /** Фильтрует массив с фильмами по ключевому слову и чекбоксу */
   function filterMovies(allMovies, keyWord, checkboxOnlyShortMovies) {
     let arrayMovies = [];
 
@@ -284,6 +410,8 @@ function App() {
               onMoviesPage={onMoviesPage}
               resetMoviesWereFound={resetMoviesWereFound}
               isMoviesWereFound={isMoviesWereFound}
+              savedMovies={savedMovies}
+              handleMovieSave={handleMovieSave}
             />
             <Footer />
           </Route>
@@ -313,7 +441,7 @@ function App() {
               component={Profile}
               handleUpdateUser={handleUpdateUser}
               handleSignOutClick={handleSignOutClick}
-              getUserInfo={getUserInfo}
+              // getUserInfo={getUserInfo}
               messageFromApi={messageFromApi}
               isLoading={isLoading}
               resetMessageFromApi={resetMessageFromApi}
