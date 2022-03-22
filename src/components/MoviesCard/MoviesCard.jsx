@@ -2,51 +2,51 @@ import React from 'react';
 import './MoviesCard.css';
 // import moviePicture from '../../images/movie-picture-1.png'
 import { baseUrlForImage } from '../../utils/constants';
-import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+// import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function MoviesCard(props) {
 
-  /** Текущий пользователь */
-  const currentUser = React.useContext(CurrentUserContext);
+  // /** Текущий пользователь */
+  // const currentUser = React.useContext(CurrentUserContext);
 
-  const { nameRU, duration, trailerLink, image } = props.movie;
+  const { nameRU, duration, trailerLink, image } = props.foundMovie;
 
-  // let classListButton = 'movies-card__button';
-  // if (props.buttonContent === 'savedMovie') { classListButton += 'movies-card__button_delete' }
+  // console.log(props.foundMovie);
 
-  // const isSaved = (props.savedMovie.movieId === props.movie.id)
-  //   ? true
-  //   : false;
+  const imageUrl = (props.isOnSavedMoviePage ? image : (baseUrlForImage.slice(0, -1) + image.url));
 
-  const isSaved = props.savedMovies.some((movie) => {
-    return (movie.movieId === props.movie.id && movie.owner === currentUser._id);
-  });
+  let isMovieSaved = false;
+  let savedMovieId = '';
+  let classListButton = '';
 
-  const classListButton = isSaved
-    ? 'movies-card__button movies-card__button_saved'
-    : 'movies-card__button';
+  if (props.isOnSavedMoviePage) {
+    isMovieSaved = true;
+    savedMovieId = props.foundMovie._id;
+  } else {
+    props.savedMovies.forEach((savedMovie) => {
+      if (savedMovie.movieId === props.foundMovie.id) {
+        isMovieSaved = true;
+        savedMovieId = savedMovie._id;
+      }
+    });
+  }
 
-  /** Определяет, ставил ли пользователь лайк для текущей карточки */
-  // const isSaved = props.savedMovies.forEach((item) => {
-  //   console.log('123');
-  //   if (props.movie.id === item.movieId) {
-  //     if (item.owner === currentUser.data._id) {
-  //       return true;
-  //     } else {
-  //       return false;
-  //     }
-  //   } else {
-  //     return false;
-  //   }
-  // });
-
-  // console.log(isSaved);
-
-  // console.log(props.savedMovies);
+  if (props.isOnSavedMoviePage) { // Если открыта страница Movies
+    classListButton = isMovieSaved
+      ? 'movies-card__button movies-card__button_delete'
+      : 'movies-card__button';
+  } else {  // Если открыта страница SavedMovies
+    classListButton = isMovieSaved
+      ? 'movies-card__button movies-card__button_saved'
+      : 'movies-card__button';
+  }
 
   function handleClickButton() {
-    props.handleMovieSave(props.movie);
+    if (isMovieSaved) { props.handleMovieDelete(savedMovieId); }
+    else { props.handleMovieSave(props.foundMovie); }
   }
+
+  console.log('123');
 
   return (
     <li className="movies-card">
@@ -61,7 +61,7 @@ function MoviesCard(props) {
           className="movie__link"
         >
           <img
-            src={baseUrlForImage + image.url}
+            src={imageUrl}
             alt="Постер к фильму" className="movie__picture"
           />
         </a>

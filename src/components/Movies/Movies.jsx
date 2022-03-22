@@ -6,18 +6,14 @@ import Preloader from '../Preloader/Preloader'
 
 function Movies(props) {
 
-  /** Если ранее выполнялся поиск фильма, то при открытии страницы будут отражены
+  /** Если ранее выполнялся поиск фильмов, то при открытии страницы будут отражены
    *  результаты последнего поиска
    */
   React.useEffect(() => {
-    const filteredMovies = JSON.parse(localStorage.getItem("filteredMovies"));
-    if (filteredMovies) {
-      if (filteredMovies.length !== 0) {
-        props.onMoviesPage(filteredMovies);
-      }
-    } else {
-      props.onMoviesPage([]);
-    }
+    const recentFoundMovies = JSON.parse(localStorage.getItem("recentFoundMovies"));
+    if (recentFoundMovies) {
+      if (recentFoundMovies.length !== 0) { props.onMoviesPage(recentFoundMovies); }
+    } else { props.onMoviesPage([]); }
 
     return () => { // Удаление текста ошибки "Ничего не найдено"
       props.resetMoviesWereFound();
@@ -27,7 +23,7 @@ function Movies(props) {
   return (
     <section className="movies">
       <SearchForm
-        getMoviesFromBeatfilmApi={props.getMoviesFromBeatfilmApi}
+        handleSubmitSearch={props.handleSubmitSearchOnMoviePage}
         messageFromApi={props.messageFromApi}
       />
       {
@@ -35,8 +31,9 @@ function Movies(props) {
           ? <Preloader />
           : <>
               <MoviesCardList
-                filteredMovies={props.filteredMovies}
+                foundMovies={props.foundMovies}
                 handleMovieSave={props.handleMovieSave}
+                handleMovieDelete={props.handleMovieDelete}
                 savedMovies={props.savedMovies}
                 // savedMovie={props.savedMovie}
               />

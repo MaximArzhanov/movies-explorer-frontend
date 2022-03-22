@@ -2,27 +2,38 @@ import React from 'react';
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard'
 import ButtonLoadMore from '../ButtonLoadMore/ButtonLoadMore'
+import { unstable_renderSubtreeIntoContainer } from 'react-dom/cjs/react-dom.development';
 
 function MoviesCardList(props) {
 
   const [moviesCardListIsFull, setMoviesCardListIsFull] = React.useState(false);
 
-  function test(movie) {
-    
-    // return props.savedMovies.some((item) => {
-    //   return (item.movieId === movie.id && item.owner === currentUser.data._id);
-    // });
-  }
+  // function getId(movie) {
+  //   if (props.isOnSavedMoviePage) {
+  //     return movie._id;
+  //   } else {
+  //     return movie.id;
+  //   }
+  // }
+
+  // React.useEffect(() => {
+  //   return () => {
+
+  //   }
+  // });
 
   return (
     <>
       <ul className="movies-card-list">
         {/* <MoviesCard buttonContent={props.buttonContent}/> */}
-        {props.filteredMovies.map(({ ...movie }) => (
+        {props.foundMovies.map(({ ...foundMovie }, index) => (
             <MoviesCard
-              key={movie.id}
-              movie={{ ...movie }}
+              // key={props.isOnMoviePage ? foundMovie._id : foundMovie.id}
+              key={index}
+              foundMovie={{ ...foundMovie }}
               handleMovieSave={props.handleMovieSave}
+              handleMovieDelete={props.handleMovieDelete}
+              isOnSavedMoviePage={props.isOnSavedMoviePage}
               // savedMovie={props.savedMovie}
               savedMovies={props.savedMovies}
               // isMovieSaved={test({ ...movie })}

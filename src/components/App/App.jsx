@@ -10,11 +10,19 @@ import Register from '../Register/Register';
 import Profile from '../Profile/Profile'
 import Footer from '../Footer/Footer';
 import PageNotFound from '../PageNotFound/PageNotFound';
-import auth from "../../utils/Auth";
+import auth from '../../utils/Auth';
 import mainApi from '../../utils/MainApi';
 import moviesApi from '../../utils/MoviesApi';
-import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
-import { baseUrlMoviesExplorerApi } from '../../utils/constants';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import {
+  searchMovies,
+  prepareMovieObject,
+  findMoviesCreatedByCurrentUser,
+  returnMessageFromApi,
+  performErrorResponse
+} from '../../utils/utils';
+
+import { errorMessageFromBeatFilmApi } from '../../utils/constants'
 
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
@@ -35,13 +43,13 @@ function App() {
   const [messageFromApi, setMessageFromApi] = React.useState('');
 
   /** Массив найденных, при запросе, фильмов (c api beatfilm-movies) */
-  const [filteredMovies, setFilteredMovies] = React.useState([]);
+  const [foundMovies, setFoundMovies] = React.useState([]);
+
+  /** Массив найденных, при запросе, фильмов (c api beatfilm-movies) */
+  const [foundSavedMovies, setFoundSavedMovies] = React.useState([]);
 
   /** Массив сохранённых фильмов */
   const [savedMovies, setSavedMovies] = React.useState([]);
-
-  /** Массив сохранённых фильмов */
-  const [savedMovie, setSavedMovie] = React.useState({});
 
   const [isMoviesWereFound, setIsMoviesWereFound] = React.useState(true);
 
@@ -49,11 +57,20 @@ function App() {
     setIsMoviesWereFound(true);
   }
 
-  /** Если ранее выполнялся поиск фильма, то при открытии страницы будут отражены
+  /** Если ранее выполнялся поиск фильмов на странице Movies,
+   *  то при открытии страницы будут отражены
    *  результаты последнего поиска
    */
-  function onMoviesPage(data) {
-    setFilteredMovies(data);
+  function onMoviesPage(movies) {
+    setFoundMovies(movies);
+  }
+
+  /** Если ранее выполнялся поиск фильмов на странице SavedMovies,
+   *  то при открытии страницы будут отражены
+   *  результаты последнего поиска
+   */
+  function onSavedMoviesPage([...movies]) {
+    setFoundSavedMovies(movies)
   }
 
   function resetMessageFromApi() {
@@ -72,17 +89,9 @@ function App() {
     setHeaderThemeBlue(state);
   }
 
-  /** Запрашивает информацию о пользователе */
-  // function getUserInfo() {
-  //   const jwt = localStorage.getItem("jwt");
-  //   mainApi.getUserInformation(jwt)
-  //     .then((data) => {
-  //       setCurrentUser(data);
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //     });
-  // }
+  function handleMessageFromApi(err) {
+    setMessageFromApi(err);
+  }
 
   /** Проверяет наличие и актуальность токена */
   function checkToken() {
@@ -90,80 +99,44 @@ function App() {
       const jwt = localStorage.getItem("jwt");
       auth.getContent(jwt)
         .then(() => {
-          // getUserInfo();
           getData();
           setLoggedIn(true);
           setMessageFromApi('');
           history.push('/movies');
         })
-        .catch((err) => {
-          console.error(err);
-        });
+        .catch((err) => { console.error(err); });
     }
   }
-
-  /** Запрашивает карточки и информацию о пользователе */
-  function getData() {
-    const jwt = localStorage.getItem("jwt");
-    Promise.all(
-      [
-        mainApi.getUserInformation(jwt),
-        mainApi.getMovies(jwt)
-      ])
-      .then((res) => {
-        if (res[0].ok && res[1].ok) { // Если ответ пришёл без ошибки
-          res[0].json()
-            .then((data) => { setCurrentUser(data.data); })
-            .catch((err) => { console.error(err); });
-          res[1].json()
-            // .then((data) => { setSavedMovies(findMoviesCreatedByCurrentUser(data.data)); })
-            .then((data) => { setSavedMovies(data.data); })
-            .catch((err) => { console.error(err); });
-        }
-        else { // Если ответ пришёл с ошибкой
-          res[0].json()
-            .then((data) => {
-              returnMessageFromApi(data)
-                .catch((err) => {
-                  console.error(err);
-                });
-            })
-            .catch((err) => { console.error(err); });
-          res[1].json()
-            .then((data) => {
-              returnMessageFromApi(data)
-                .catch((err) => {
-                  console.error(err);
-                });
-            })
-            .catch((err) => { console.error(err); });
-        }
-      })
-      .catch((err) => { console.error(err); })
-  }
-
-  /** При обновлении currentUser обновляет массив savedMovies
-   * (оставляет только карточки созданные текущим пользователем) */
-  // React.useEffect(() => {
-  //   setSavedMovies(findMoviesCreatedByCurrentUser(savedMovies));
-  // }, [currentUser]);
 
   /** Проверяет наличие и актуальность токена при загрузке приложения */
   React.useEffect(() => {
     checkToken();
   }, []);
 
-  function returnMessageFromApi(data) {
-    try { // Если приходит ошибка валидации от Celebrate/Joi
-      if (data.validation.body.message) {
-        return Promise.reject(data.validation.body.message);
-      }
-    }
-    catch (err) {
-      if (data.message) {
-        return Promise.reject(data.message);
-      }
-    }
+  /** Запрашивает карточки и информацию о пользователе */
+  function getData() {
+    const jwt = localStorage.getItem("jwt");
+    Promise.all([ mainApi.getUserInformation(jwt), mainApi.getMovies(jwt) ])
+      .then((res) => {
+        if (res[0].ok && res[1].ok) { // Если ответ пришёл без ошибки
+          res[0].json()
+            .then((user) => {
+              setCurrentUser(user.data);
+              res[1].json()
+                .then((movies) => {
+                  console.log(movies);
+                  setSavedMovies(findMoviesCreatedByCurrentUser(movies.data, user.data._id));
+                })
+                .catch((err) => { console.error(err); });
+            })
+            .catch((err) => { console.error(err); });
+        }
+        else { // Если ответ пришёл с ошибкой
+          performErrorResponse(res[0], handleMessageFromApi);
+          performErrorResponse(res[1], handleMessageFromApi);
+        }
+      })
+      .catch((err) => { console.error(err); })
   }
 
   /** Обработчик авторизации пользователя */
@@ -176,23 +149,12 @@ function App() {
             .then((data) => {
               setLoggedIn(true);
               localStorage.setItem("jwt", data.jwt);
-              // getUserInfo();
               getData();
               history.push('/movies');
             })
             .catch((err) => { console.error(err); });
         }
-        else { // Если ответ пришёл с ошибкой
-          res.json()
-            .then((data) => {
-              returnMessageFromApi(data)
-                .catch((err) => {
-                  console.error(err);
-                  setMessageFromApi(err);
-                });
-            })
-            .catch((err) => { console.error(err); });
-        }
+        else { performErrorResponse(res, handleMessageFromApi); } // Если ответ пришёл с ошибкой
       })
       .catch((err) => { console.error(err); })
       .finally(() => { setIsLoading(false); });
@@ -208,17 +170,7 @@ function App() {
             .then((data) => { handleUserAuthorization(email, password); })
             .catch((err) => { console.error(err); });
         }
-        else { // Если ответ пришёл с ошибкой
-          res.json()
-            .then((data) => {
-              returnMessageFromApi(data)
-                .catch((err) => {
-                  console.error(err);
-                  setMessageFromApi(err);
-                });
-            })
-            .catch((err) => { console.error(err); });
-        }
+        else { performErrorResponse(res, handleMessageFromApi); } // Если ответ пришёл с ошибкой
       })
       .catch((err) => { console.error(err); })
       .finally(() => { setIsLoading(false); });
@@ -226,8 +178,8 @@ function App() {
 
   /** Обновляет информацию о пользователе */
   function handleUpdateUser({ name, email }) {
-    const jwt = localStorage.getItem("jwt");
     setIsLoading(true);
+    const jwt = localStorage.getItem("jwt");
     mainApi.updateUserInformation(name, email, jwt)
     .then((res) => {
       if (res.ok) { // Если ответ пришёл без ошибки
@@ -238,97 +190,63 @@ function App() {
           })
           .catch((err) => { console.error(err); });
       }
-      else { // Если ответ пришёл с ошибкой
-        res.json()
-          .then((data) => {
-            returnMessageFromApi(data)
-              .catch((err) => {
-                console.error(err);
-                setMessageFromApi(err);
-              });
-          })
-          .catch((err) => { console.error(err); });
-      }
+      else { performErrorResponse(res, handleMessageFromApi); } // Если ответ пришёл с ошибкой
     })
     .catch((err) => { console.error(err); })
     .finally(() => { setIsLoading(false); });
   }
 
+
+
   /** Выходит из аккаунта. Удаляет токен */
   function handleSignOutClick() {
     localStorage.removeItem("jwt");
-    localStorage.removeItem("filteredMovies");
+    localStorage.removeItem("recentFoundMovies");
+    localStorage.removeItem("recentFoundSavedMovies");
     localStorage.removeItem("allMovies");
-    setFilteredMovies([]);
+    setFoundMovies([]);
     setLoggedIn(false);
     history.push('/');
   }
 
-  /** Запрашивает фильмы с Api BeatFilm */
-  function getMoviesFromBeatfilmApi(keyWord, checkboxOnlyShortMovies) {
+  function determineIfMoviesAreFound(foundMoviesArray) {
+    if (foundMoviesArray.length !== 0) { setIsMoviesWereFound(true); }
+    else { setIsMoviesWereFound(false); }
+  }
+
+  function handleFoundMoviesArray(foundMoviesArray) {
+    determineIfMoviesAreFound(foundMoviesArray);
+    localStorage.setItem("recentFoundMovies", JSON.stringify(foundMoviesArray));
+    setFoundMovies(foundMoviesArray);
+  }
+
+  /** Запрашивает фильмы с Api BeatFilm (Поиск на странице Movie) */
+  function handleSubmitSearchOnMoviePage(keyWord, checkboxOnlyShortMovies) {
     if (localStorage.getItem('allMovies')) { // Если ранее выполнялся запрос к АPI
-      filterMovies(
-        JSON.parse(localStorage.getItem('allMovies')),
-        keyWord,
-        checkboxOnlyShortMovies
-      )
-    } else {
+      const allMovies = JSON.parse(localStorage.getItem('allMovies'));
+      const foundMoviesArray = searchMovies(allMovies, keyWord, checkboxOnlyShortMovies);
+      handleFoundMoviesArray(foundMoviesArray);
+    } else { // Если запрос к API не выполнялся (В локальном хранилище нет всех фильмов)
       setIsLoading(true);
       moviesApi.getBeatfilmMovies()
         .then((data) => {
           localStorage.setItem("allMovies", JSON.stringify(data));
-          filterMovies(data, keyWord, checkboxOnlyShortMovies)
+          const foundMoviesArray = searchMovies(data, keyWord, checkboxOnlyShortMovies);
+          handleFoundMoviesArray(foundMoviesArray);
         })
         .catch((err) => {
-          setMessageFromApi('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
+          setMessageFromApi(errorMessageFromBeatFilmApi);
           console.error(err);
         })
         .finally(() => { setIsLoading(false); });
     }
   }
 
-  function findMoviesCreatedByCurrentUser(movies) {
-    console.log(movies);
-    const moviesOfCurrentUser = movies.filter(movie => movie.owner === currentUser._id);
-    return moviesOfCurrentUser;
-  }
-
-  /** Запрос сохранённых фильмов */
-  function getSavedMoviesFromMainApi() {
-    const jwt = localStorage.getItem("jwt");
-    mainApi.getMovies(jwt)
-      .then((res) => {
-        if (res.ok) { // Если ответ пришёл без ошибки
-          res.json()
-            .then((data) => {
-              setSavedMovies(findMoviesCreatedByCurrentUser(data.data));
-            })
-            .catch((err) => { console.error(err); });
-        }
-        else { // Если ответ пришёл с ошибкой
-          res.json()
-            .then((data) => {
-              returnMessageFromApi(data)
-                .catch((err) => {
-                  console.error(err);
-                });
-            })
-            .catch((err) => { console.error(err); });
-        }
-      })
-      .catch((err) => { console.error(err); })
-  }
-
-  /** Подготавливает объект для отправки запроса */
-  function prepareMovieObject({...movie}) {
-    const image = baseUrlMoviesExplorerApi.slice(0, -1) + movie.image.url;
-    const country = movie.country ? movie.country : 'Нет информации';
-    const movieId = movie.id;
-    const thumbnail = image;
-    delete movie.id;
-    delete movie.created_at;
-    delete movie.updated_at;
-    return {...movie, image, thumbnail, country, movieId};
+  function handleSubmitSearchOnSavedMoviePage(keyWord, checkboxOnlyShortMovies) {
+    const foundSavedMoviesArray = searchMovies(savedMovies, keyWord, checkboxOnlyShortMovies);
+    determineIfMoviesAreFound(foundSavedMoviesArray);
+    localStorage.setItem("recentFoundSavedMovies", JSON.stringify(foundSavedMoviesArray));
+    setFoundSavedMovies(foundSavedMoviesArray);
   }
   
   /** Отправляет запрос на сохранение карточки с фильмом */
@@ -338,46 +256,38 @@ function App() {
       .then((res) => {
         if (res.ok) { // Если ответ пришёл без ошибки
           res.json()
-            .then((newMovie) => {
-              setSavedMovies([...savedMovies, newMovie.data])
-            })
+            .then((newMovie) => { setSavedMovies([...savedMovies, newMovie.data]) })
             .catch((err) => { console.error(err); });
         }
-        else { // Если ответ пришёл с ошибкой
-          res.json()
-            .then((data) => {
-              returnMessageFromApi(data)
-                .catch((err) => { console.error(err); });
-            })
-            .catch((err) => { console.error(err); });
-        }
+        else { performErrorResponse(res, handleMessageFromApi); } // Если ответ пришёл с ошибкой
       })
       .catch((err) => { console.error(err); });
   }
 
-  /** Фильтрует массив с фильмами по ключевому слову и чекбоксу */
-  function filterMovies(allMovies, keyWord, checkboxOnlyShortMovies) {
-    let arrayMovies = [];
+  // React.useEffect(() => {
+  //   localStorage.setItem("recentFoundSavedMovies", JSON.stringify(foundSavedMovies));
+  // }, [foundSavedMovies]);
 
-    if (keyWord === '*') { // Если введён символ "*", то отображаются все фильмы
-      arrayMovies = checkboxOnlyShortMovies
-        ? allMovies.filter((movie) => { return (movie.duration < 40); })
-        : allMovies;
-    }
-    else {
-      arrayMovies = checkboxOnlyShortMovies
-        ? allMovies.filter((movie) => {
-          return (movie.duration < 40 && movie.nameRU.toUpperCase().includes(keyWord.toUpperCase()));
-        })
-        : allMovies.filter((movie) => {
-          return (movie.nameRU.toUpperCase().includes(keyWord.toUpperCase()));
-        })
-    }
-
-    if (arrayMovies.length !== 0) { setIsMoviesWereFound(true); }
-    else { setIsMoviesWereFound(false); }
-    localStorage.setItem("filteredMovies", JSON.stringify(arrayMovies));
-    setFilteredMovies(arrayMovies);
+  /** Удаляет карточку  */
+  function handleMovieDelete(movieId) {
+    const jwt = localStorage.getItem("jwt");
+    mainApi.deleteCard(movieId, jwt)
+      .then((res) => {
+        if (res.ok) { // Если ответ пришёл без ошибки
+          res.json()
+            .then((deletedMovie) => {
+              setSavedMovies((state) =>
+                state.filter(savedMovie => savedMovie._id !== movieId)
+              ); //Возвращает все карточки кроме той которую удалили
+              setFoundSavedMovies((state) =>
+                state.filter(foundSavedMovie => foundSavedMovie._id !== movieId)
+              ); //Возвращает все карточки кроме той которую удалили
+            })
+            .catch((err) => { console.error(err); });
+        }
+        else { performErrorResponse(res, handleMessageFromApi); } // Если ответ пришёл с ошибкой
+      })
+      .catch((err) => { console.error(err); });
   }
 
   return (
@@ -404,14 +314,15 @@ function App() {
               moviesCardListIsFull={true}
               component={Movies}
               isLoading={isLoading}
-              getMoviesFromBeatfilmApi={getMoviesFromBeatfilmApi}
-              filteredMovies={filteredMovies}
+              handleSubmitSearchOnMoviePage={handleSubmitSearchOnMoviePage}
+              foundMovies={foundMovies}
               messageFromApi={messageFromApi}
               onMoviesPage={onMoviesPage}
               resetMoviesWereFound={resetMoviesWereFound}
               isMoviesWereFound={isMoviesWereFound}
               savedMovies={savedMovies}
               handleMovieSave={handleMovieSave}
+              handleMovieDelete={handleMovieDelete}
             />
             <Footer />
           </Route>
@@ -424,8 +335,14 @@ function App() {
             <ProtectedRoute
               path="/saved-movies"
               loggedIn={loggedIn}
-              moviesCardListIsFull={true}
               component={SavedMovies}
+              handleSubmitSearchOnSavedMoviePage={handleSubmitSearchOnSavedMoviePage}
+              resetMoviesWereFound={resetMoviesWereFound}
+              onSavedMoviesPage={onSavedMoviesPage}
+              isMoviesWereFound={isMoviesWereFound}
+              foundSavedMovies={foundSavedMovies}
+              savedMovies={savedMovies}
+              handleMovieDelete={handleMovieDelete}
             />
             <Footer />
           </Route> 
@@ -441,7 +358,6 @@ function App() {
               component={Profile}
               handleUpdateUser={handleUpdateUser}
               handleSignOutClick={handleSignOutClick}
-              // getUserInfo={getUserInfo}
               messageFromApi={messageFromApi}
               isLoading={isLoading}
               resetMessageFromApi={resetMessageFromApi}

@@ -62,6 +62,10 @@
     background-color: rgba(49, 49, 49, .8);
 }
 
+.movies-card__button_delete::after  {
+    content: '';
+}
+
 .movies-card__button_saved::after {
     content: '';
 }

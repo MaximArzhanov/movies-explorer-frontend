@@ -51,6 +51,16 @@ class MainApi {
     .then((res) => { return res })
   }
 
+  deleteCard(movieId, jwt) {
+    return fetch(`${this._baseUrl}movies/${movieId}`, {
+      method: 'DELETE',
+      headers: {
+        "Authorization" : `Bearer ${jwt}`,
+        }
+      })
+      .then((res) => { return res })
+  }
+
 }
 
 const mainApi = new MainApi(baseUrlMoviesExplorerApi);
