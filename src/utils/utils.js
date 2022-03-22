@@ -1,6 +1,4 @@
 import {
-  baseUrlMoviesExplorerApi,
-  baseUrlBeatfilmMovies,
   baseUrlForImage
 } from './constants.js';
 

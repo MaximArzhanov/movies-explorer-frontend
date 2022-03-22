@@ -2,25 +2,10 @@ import React from 'react';
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard'
 import ButtonLoadMore from '../ButtonLoadMore/ButtonLoadMore'
-import { unstable_renderSubtreeIntoContainer } from 'react-dom/cjs/react-dom.development';
 
 function MoviesCardList(props) {
 
   const [moviesCardListIsFull, setMoviesCardListIsFull] = React.useState(false);
-
-  // function getId(movie) {
-  //   if (props.isOnSavedMoviePage) {
-  //     return movie._id;
-  //   } else {
-  //     return movie.id;
-  //   }
-  // }
-
-  // React.useEffect(() => {
-  //   return () => {
-
-  //   }
-  // });
 
   return (
     <>

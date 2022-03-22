@@ -17,13 +17,11 @@ function SavedMovies(props) {
     }
     else { props.onSavedMoviesPage([]); }
 
-    console.log(recentFoundSavedMovies);
-
     setIsOnSavedMoviePage(true);
 
-    return () => { // Удаление текста ошибки "Ничего не найдено"
-      props.resetMoviesWereFound();
-
+    return () => {
+      props.resetMoviesWereFound(); // Сброс текста ошибки "Ничего не найдено"
+      props.resetMessageFromApi(); // Сброс текста ошибки от Api
       setIsOnSavedMoviePage(false);
     }
   }, []);
@@ -31,11 +29,6 @@ function SavedMovies(props) {
   React.useEffect(() => {
     localStorage.setItem("recentFoundSavedMovies", JSON.stringify(props.foundSavedMovies));
   }, [props.foundSavedMovies]);
-
-  // React.useEffect(() => {
-
-  // }, [props.savedMovies]);
-  
 
   return (
     <section className="saved-movies">

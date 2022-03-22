@@ -15,8 +15,9 @@ function Movies(props) {
       if (recentFoundMovies.length !== 0) { props.onMoviesPage(recentFoundMovies); }
     } else { props.onMoviesPage([]); }
 
-    return () => { // Удаление текста ошибки "Ничего не найдено"
-      props.resetMoviesWereFound();
+    return () => { 
+      props.resetMoviesWereFound(); // Сброс текста ошибки "Ничего не найдено"
+      props.resetMessageFromApi(); // Сброс текста ошибки от Api
     }
   }, []);
 
@@ -35,7 +36,6 @@ function Movies(props) {
                 handleMovieSave={props.handleMovieSave}
                 handleMovieDelete={props.handleMovieDelete}
                 savedMovies={props.savedMovies}
-                // savedMovie={props.savedMovie}
               />
               <p className="movies__message">{props.isMoviesWereFound || 'Ничего не найдено'}</p>
             </>

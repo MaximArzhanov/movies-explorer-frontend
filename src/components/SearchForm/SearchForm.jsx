@@ -4,7 +4,6 @@ import './SearchForm.css';
 
 function SearchForm(props) {
 
-  const [value, setValue] = React.useState('');
   const [error, setError] = React.useState('');
   const [isValid, setIsValid] = React.useState(false);
 

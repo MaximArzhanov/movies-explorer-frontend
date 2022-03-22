@@ -124,7 +124,6 @@ function App() {
               setCurrentUser(user.data);
               res[1].json()
                 .then((movies) => {
-                  console.log(movies);
                   setSavedMovies(findMoviesCreatedByCurrentUser(movies.data, user.data._id));
                 })
                 .catch((err) => { console.error(err); });
@@ -256,17 +255,16 @@ function App() {
       .then((res) => {
         if (res.ok) { // Если ответ пришёл без ошибки
           res.json()
-            .then((newMovie) => { setSavedMovies([...savedMovies, newMovie.data]) })
+            .then((newMovie) => {
+              setSavedMovies([...savedMovies, newMovie.data]);
+              localStorage.removeItem("recentFoundSavedMovies");
+            })
             .catch((err) => { console.error(err); });
         }
         else { performErrorResponse(res, handleMessageFromApi); } // Если ответ пришёл с ошибкой
       })
       .catch((err) => { console.error(err); });
   }
-
-  // React.useEffect(() => {
-  //   localStorage.setItem("recentFoundSavedMovies", JSON.stringify(foundSavedMovies));
-  // }, [foundSavedMovies]);
 
   /** Удаляет карточку  */
   function handleMovieDelete(movieId) {
@@ -276,18 +274,29 @@ function App() {
         if (res.ok) { // Если ответ пришёл без ошибки
           res.json()
             .then((deletedMovie) => {
-              setSavedMovies((state) =>
+              setSavedMovies((state) => //Возвращает все карточки кроме той которую удалили
                 state.filter(savedMovie => savedMovie._id !== movieId)
-              ); //Возвращает все карточки кроме той которую удалили
-              setFoundSavedMovies((state) =>
+              );
+              setFoundSavedMovies((state) => //Возвращает все карточки кроме той которую удалили
                 state.filter(foundSavedMovie => foundSavedMovie._id !== movieId)
-              ); //Возвращает все карточки кроме той которую удалили
+              );
+              // localStorage.removeItem("recentFoundSavedMovies");
+              updateRecentFoundSavedMovies(movieId);
             })
             .catch((err) => { console.error(err); });
         }
         else { performErrorResponse(res, handleMessageFromApi); } // Если ответ пришёл с ошибкой
       })
       .catch((err) => { console.error(err); });
+  }
+
+  /** Обновляет список фильмов в локальном хранилище */
+  function updateRecentFoundSavedMovies(movieId) {
+    const recentFoundSavedMovies =  JSON.parse(localStorage.getItem("recentFoundSavedMovies"));
+    const newFoundSavedMovies = recentFoundSavedMovies.filter((foundSavedMovie) => {
+      return foundSavedMovie._id !== movieId;
+    });
+    localStorage.setItem("recentFoundSavedMovies", JSON.stringify(newFoundSavedMovies));
   }
 
   return (
@@ -317,6 +326,7 @@ function App() {
               handleSubmitSearchOnMoviePage={handleSubmitSearchOnMoviePage}
               foundMovies={foundMovies}
               messageFromApi={messageFromApi}
+              resetMessageFromApi={resetMessageFromApi}
               onMoviesPage={onMoviesPage}
               resetMoviesWereFound={resetMoviesWereFound}
               isMoviesWereFound={isMoviesWereFound}
@@ -338,6 +348,7 @@ function App() {
               component={SavedMovies}
               handleSubmitSearchOnSavedMoviePage={handleSubmitSearchOnSavedMoviePage}
               resetMoviesWereFound={resetMoviesWereFound}
+              resetMessageFromApi={resetMessageFromApi}
               onSavedMoviesPage={onSavedMoviesPage}
               isMoviesWereFound={isMoviesWereFound}
               foundSavedMovies={foundSavedMovies}

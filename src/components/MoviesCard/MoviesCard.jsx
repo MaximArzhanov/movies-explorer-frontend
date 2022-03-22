@@ -1,17 +1,11 @@
 import React from 'react';
 import './MoviesCard.css';
-// import moviePicture from '../../images/movie-picture-1.png'
 import { baseUrlForImage } from '../../utils/constants';
-// import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function MoviesCard(props) {
 
-  // /** Текущий пользователь */
-  // const currentUser = React.useContext(CurrentUserContext);
-
   const { nameRU, duration, trailerLink, image } = props.foundMovie;
 
-  // console.log(props.foundMovie);
 
   const imageUrl = (props.isOnSavedMoviePage ? image : (baseUrlForImage.slice(0, -1) + image.url));
 
@@ -45,8 +39,6 @@ function MoviesCard(props) {
     if (isMovieSaved) { props.handleMovieDelete(savedMovieId); }
     else { props.handleMovieSave(props.foundMovie); }
   }
-
-  console.log('123');
 
   return (
     <li className="movies-card">
