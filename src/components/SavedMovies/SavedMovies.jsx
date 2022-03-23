@@ -5,7 +5,7 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 
 function SavedMovies(props) {
 
-  const [isOnSavedMoviePage, setIsOnSavedMoviePage] = React.useState(false);
+  const [isOnSavedMoviesPage, setIsOnSavedMoviesPage] = React.useState(false);
 
   /** Если ранее выполнялся поиск фильмов, то при открытии страницы будут отражены
    *  результаты последнего поиска
@@ -17,12 +17,12 @@ function SavedMovies(props) {
     }
     else { props.onSavedMoviesPage([]); }
 
-    setIsOnSavedMoviePage(true);
+    setIsOnSavedMoviesPage(true);
 
     return () => {
       props.resetMoviesWereFound(); // Сброс текста ошибки "Ничего не найдено"
       props.resetMessageFromApi(); // Сброс текста ошибки от Api
-      setIsOnSavedMoviePage(false);
+      setIsOnSavedMoviesPage(false);
     }
   }, []);
 
@@ -39,7 +39,7 @@ function SavedMovies(props) {
         foundMovies={props.foundSavedMovies}
         handleMovieDelete={props.handleMovieDelete}
         savedMovies={props.savedMovies}
-        isOnSavedMoviePage={isOnSavedMoviePage}
+        isOnSavedMoviesPage={isOnSavedMoviesPage}
       />
       <p className="movies__message">{props.isMoviesWereFound || 'Ничего не найдено'}</p>
     </section>

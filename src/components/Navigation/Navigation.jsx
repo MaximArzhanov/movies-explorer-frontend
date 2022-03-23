@@ -10,7 +10,7 @@ function Navigation(props) {
   /** Закрытие меню навигации при ширине экрана более 1023px */
   React.useEffect(() => {
     const handleResizeScreen = () => {
-      if(document.documentElement.clientWidth > 1023 && isNavigationMenuOpened)  {
+      if (document.documentElement.clientWidth > 1023 && isNavigationMenuOpened)  {
           setIsNavigationMenuOpened(false);
       }
     };

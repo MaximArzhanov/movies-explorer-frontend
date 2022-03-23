@@ -6,14 +6,13 @@ function MoviesCard(props) {
 
   const { nameRU, duration, trailerLink, image } = props.foundMovie;
 
-
-  const imageUrl = (props.isOnSavedMoviePage ? image : (baseUrlForImage.slice(0, -1) + image.url));
+  const imageUrl = (props.isOnSavedMoviesPage ? image : (baseUrlForImage.slice(0, -1) + image.url));
 
   let isMovieSaved = false;
   let savedMovieId = '';
   let classListButton = '';
 
-  if (props.isOnSavedMoviePage) {
+  if (props.isOnSavedMoviesPage) {
     isMovieSaved = true;
     savedMovieId = props.foundMovie._id;
   } else {
@@ -25,11 +24,11 @@ function MoviesCard(props) {
     });
   }
 
-  if (props.isOnSavedMoviePage) { // Если открыта страница Movies
+  if (props.isOnSavedMoviesPage) { // Если открыта страница SavedMovies
     classListButton = isMovieSaved
       ? 'movies-card__button movies-card__button_delete'
       : 'movies-card__button';
-  } else {  // Если открыта страница SavedMovies
+  } else {  // Если открыта страница Movies
     classListButton = isMovieSaved
       ? 'movies-card__button movies-card__button_saved'
       : 'movies-card__button';

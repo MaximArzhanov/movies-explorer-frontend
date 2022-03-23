@@ -219,7 +219,7 @@ function App() {
     setFoundMovies(foundMoviesArray);
   }
 
-  /** Запрашивает фильмы с Api BeatFilm (Поиск на странице Movie) */
+  /** Запрашивает фильмы с Api BeatFilm (Поиск на странице Movies) */
   function handleSubmitSearchOnMoviePage(keyWord, checkboxOnlyShortMovies) {
     if (localStorage.getItem('allMovies')) { // Если ранее выполнялся запрос к АPI
       const allMovies = JSON.parse(localStorage.getItem('allMovies'));
@@ -241,6 +241,7 @@ function App() {
     }
   }
 
+  /** Поиск на странице SavedMovies */
   function handleSubmitSearchOnSavedMoviePage(keyWord, checkboxOnlyShortMovies) {
     const foundSavedMoviesArray = searchMovies(savedMovies, keyWord, checkboxOnlyShortMovies);
     determineIfMoviesAreFound(foundSavedMoviesArray);
@@ -255,10 +256,7 @@ function App() {
       .then((res) => {
         if (res.ok) { // Если ответ пришёл без ошибки
           res.json()
-            .then((newMovie) => {
-              setSavedMovies([...savedMovies, newMovie.data]);
-              localStorage.removeItem("recentFoundSavedMovies");
-            })
+            .then((newMovie) => { setSavedMovies([...savedMovies, newMovie.data]); })
             .catch((err) => { console.error(err); });
         }
         else { performErrorResponse(res, handleMessageFromApi); } // Если ответ пришёл с ошибкой
@@ -280,7 +278,6 @@ function App() {
               setFoundSavedMovies((state) => //Возвращает все карточки кроме той которую удалили
                 state.filter(foundSavedMovie => foundSavedMovie._id !== movieId)
               );
-              // localStorage.removeItem("recentFoundSavedMovies");
               updateRecentFoundSavedMovies(movieId);
             })
             .catch((err) => { console.error(err); });

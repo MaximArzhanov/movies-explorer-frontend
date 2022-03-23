@@ -23,6 +23,7 @@ function SearchForm(props) {
   function handleSubmit(e) {
     e.preventDefault();
     if (checkValidation()) {
+      if (props.isOnMoviesPage) { props.resetBufferFoundMovies(); }
       props.handleSubmitSearch(keyWordRef.current.value, checkboxOnlyShortMovies);
     }
   }
