@@ -199,7 +199,7 @@ function App() {
     localStorage.removeItem("checkboxStateOnSavedMoviePage");
   }
 
-  /** Выходит из аккаунта. Удаляет токен */
+  /** Выходит из аккаунта. Сбрасывает значения в LocalStorage */
   function handleSignOutClick() {
     resetLocalStorage();
     setFoundMovies([]);
@@ -269,7 +269,10 @@ function App() {
       .then((res) => {
         if (res.ok) { // Если ответ пришёл без ошибки
           res.json()
-            .then((newMovie) => { setSavedMovies([...savedMovies, newMovie.data]); })
+            .then((newMovie) => {
+              setSavedMovies([...savedMovies, newMovie.data]);
+              // test(newMovie.data);
+            })
             .catch((err) => { console.error(err); });
         }
         else { performErrorResponse(res, handleMessageFromApi); } // Если ответ пришёл с ошибкой
@@ -300,7 +303,7 @@ function App() {
       .catch((err) => { console.error(err); });
   }
 
-  /** Обновляет список фильмов в локальном хранилище */
+  /** Обновляет список сохранённых фильмов в локальном хранилище при удалении фильма */
   function updateRecentFoundSavedMovies(movieId) {
     const recentFoundSavedMovies =  JSON.parse(localStorage.getItem("recentFoundSavedMovies"));
     const newFoundSavedMovies = recentFoundSavedMovies.filter((foundSavedMovie) => {

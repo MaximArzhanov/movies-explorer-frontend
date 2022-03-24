@@ -30,12 +30,18 @@ function searchMovies(allMovies, keyWord, checkboxOnlyShortMovies) {
 function prepareMovieObject({...movie}) {
   const image = baseUrlForImage.slice(0, -1) + movie.image.url;
   const country = movie.country ? movie.country : 'Нет информации';
+  const nameEN = movie.nameEN ? movie.nameEN : 'Нет информации';
+  const nameRU = movie.nameRU ? movie.nameRU : 'Нет информации';
+  const director = movie.director ? movie.director : 'Нет информации';
+  const description = movie.description ? movie.description : 'Нет информации';
+  const duration = movie.duration ? movie.duration : 'Нет информации';
   const movieId = movie.id;
   const thumbnail = image;
+  const trailerLink = movie.trailerLink ? movie.trailerLink : image;
   delete movie.id;
   delete movie.created_at;
   delete movie.updated_at;
-  return {...movie, image, thumbnail, country, movieId};
+  return {...movie, image, thumbnail, country, movieId, nameEN, nameRU, trailerLink, director, description, duration};
 }
 
 function findMoviesCreatedByCurrentUser(movies, currentUserId) {

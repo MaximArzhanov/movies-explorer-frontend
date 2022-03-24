@@ -31,6 +31,11 @@ function SearchForm(props) {
       const checkBoxState = JSON.parse(localStorage.getItem("checkboxStateOnSavedMoviePage"));
       if (textOfQuery) { keyWordRef.current.value = textOfQuery; }
       if (checkBoxState) { setСheckboxOnlyShortMovies(checkBoxState); }
+
+      // Выполнить запрос на поиск фильм в соответствии с ранее введённым запросом
+      if (textOfQuery) {
+        props.handleSubmitSearch(keyWordRef.current.value, checkBoxState);
+      }
     }
   }, [props.isOnMoviesPage, props.isOnSavedMoviesPage]);
 
