@@ -7,6 +7,7 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 function Profile(props) {
 
   const nameRef = React.useRef();
+  const emailRef = React.useRef();
   const buttonRef = React.useRef();
 
   /** Текущий пользователь */
@@ -15,7 +16,15 @@ function Profile(props) {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
 
+  const [values, setValues] = React.useState({});
+  const [errors, setErrors] = React.useState({});
+  const [isValid, setIsValid] = React.useState(false);
+
+  /** Значение true если страница в состоянии редактирования профиля
+   *  Значение false если страница в состоянии просмотра данных профиля */
   const [isEditProfile, setIsEditProfile] = React.useState(false);
+
+  const [isDataNotEquals, setIsDataNotEquals] = React.useState(false);
 
   /** Формирует список классов для кнопки отправки формы */
   const createClassListButton = () => {
@@ -23,7 +32,7 @@ function Profile(props) {
       if (props.isLoading) {
         return 'profile-form__button profile-form__button_theme_blue profile-form__button_disabled';
       } else {
-        return (isValid
+        return ((isValid && isDataNotEquals)
           ? 'profile-form__button profile-form__button_theme_blue'
           : 'profile-form__button profile-form__button_theme_blue profile-form__button_disabled');
       }
@@ -53,6 +62,15 @@ function Profile(props) {
     setName(currentUser.name);
     setEmail(currentUser.email);
   }, [currentUser]);
+
+  /** Проверяет не соответствует ли введённая информация текущим данным пользователя */
+  function checkIsDataNotEquals() {
+    if (currentUser.name !== nameRef.current.value || currentUser.email !== emailRef.current.value) {
+      setIsDataNotEquals(true);
+    } else {
+      setIsDataNotEquals(false);
+    }
+  }
 
   /** Выполняется логика сохранения данных профиля
    *  или выполняется переход к редактированию профиля */
@@ -101,10 +119,6 @@ function Profile(props) {
   }, []);
 
   /** Валидация полей формы */
-  const [values, setValues] = React.useState({});
-  const [errors, setErrors] = React.useState({});
-  const [isValid, setIsValid] = React.useState(false);
-
   const handleChange = (event) => {
     const target = event.target;
     const name = target.name;
@@ -112,6 +126,7 @@ function Profile(props) {
     setValues({...values, [name]: value});
     setErrors({...errors, [name]: target.validationMessage });
     setIsValid(target.closest("form").checkValidity());
+    checkIsDataNotEquals();
   };
 
   const resetForm = useCallback(
@@ -159,6 +174,7 @@ function Profile(props) {
             value={email || ""}
             onChange={handleChangeEmail}
             placeholder="Email"
+            ref={emailRef}
             autoComplete="off"
           />
           {!isEditProfile &&
