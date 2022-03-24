@@ -4,6 +4,14 @@ import './Promo.css';
 
 function Promo() {
 
+  function handleClick(e) {
+    e.preventDefault();
+    document.querySelector('#about-project').scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  }
+
   return (
     <section className="promo">
       
@@ -16,7 +24,7 @@ function Promo() {
           Листайте ниже, чтобы узнать больше
           про этот проект&nbsp;и&nbsp;его&nbsp;создателя
         </h2>
-        <Link to="/" className="promo__link">Узнать больше</Link>
+        <Link to="/" onClick={handleClick} className="promo__link">Узнать больше</Link>
       </div>
 
       <div className="promo__image"></div>

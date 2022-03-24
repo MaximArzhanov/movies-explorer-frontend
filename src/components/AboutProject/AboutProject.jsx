@@ -2,10 +2,10 @@ import React from 'react';
 import './AboutProject.css';
 import SectionTitle from '../SectionTitle/SectionTitle'
 
-function AboutProject() {
+function AboutProject(props) {
 
   return (
-    <section className="about-project">
+    <section id="about-project" className="about-project">
       <SectionTitle titleText="О проекте" />
       <div className="about-project__text-content">
         <aside className="about-project__container">
