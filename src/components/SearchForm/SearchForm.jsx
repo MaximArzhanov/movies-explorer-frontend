@@ -1,6 +1,8 @@
 import React from 'react';
 import './SearchForm.css';
 
+let isMoviesWereShowed = false;
+
 function SearchForm(props) {
 
   const [error, setError] = React.useState('');
@@ -11,10 +13,15 @@ function SearchForm(props) {
 
   const [checkboxOnlyShortMovies, setСheckboxOnlyShortMovies] = React.useState(false);
 
+  /** Если карточки уже были отрисованы на странцие */
+  if (props.foundMovies.length !== 0) {
+    isMoviesWereShowed = true;
+  }
+
   /** Записывает значение чекбокса в стейт-переменную */
   function handleChangeCheckbox(e) {
     setСheckboxOnlyShortMovies(e.target.checked);
-    if (props.foundMovies.length !== 0) {
+    if (isMoviesWereShowed) {
       props.handleSubmitSearch(keyWordRef.current.value, checkboxRef.current.checked);
     }
   }
