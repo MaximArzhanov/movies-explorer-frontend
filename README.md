@@ -35,13 +35,12 @@
 
 ## Статус проекта
 
-Проект дорабатывается. Планируется реализовать:
+Работа над проектом завершена.
 
-- Регистрация и авторизация пользователя
+[Ссылка на проект (http)](http://diploma.maxim.arzhanov.nomoredomains.work/)
 
-- Реализовать запросы к API BeatFilm
+[Ссылка на проект (https)](https://diploma.maxim.arzhanov.nomoredomains.work/)
 
-- Реализовать запросы к API movies-explorer
-
+IP-адрес сервера: 51.250.3.76
 
 [Cсылка на макет](https://www.figma.com/file/Yd1HgxrDc4Sj2kOghJUVnT/Diploma_Maxim_Arzhanov?node-id=891%3A3857)
