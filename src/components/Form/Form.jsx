@@ -52,7 +52,7 @@ function Form(props) {
 
     return () => {
       resetForm();
-      props.onFormPage();
+      props.resetMessageFromApi();
     }
   }, []);
 

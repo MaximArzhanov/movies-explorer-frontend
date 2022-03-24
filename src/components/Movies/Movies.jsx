@@ -55,13 +55,11 @@ function Movies(props) {
     arrayWithAllFoundMovies.forEach((element, index) => {
       if (index >= startIndex) { counter++; }
     });
-    console.log(counter);
     return counter;
   }
 
   /** Определяет был ли уже отрисован первоначальный массив найденных карточек */
   function updateInitialArrayOfCardsShowed(lengthOfArray) {
-    console.log(lengthOfArray);
     if (lengthOfArray === 0) { initialArrayOfCardsShowed = false; }
     else { initialArrayOfCardsShowed = true; }
   }
@@ -82,7 +80,6 @@ function Movies(props) {
       if (initialArrayOfCardsShowed) { maxQuantityRequiredOfCards = 3;}
       else { maxQuantityRequiredOfCards = 12; }
     }
-    console.log(maxQuantityRequiredOfCards);
   }
 
   /** Обновляет массив bufferFoundMovies */

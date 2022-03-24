@@ -7,6 +7,7 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 function Profile(props) {
 
   const nameRef = React.useRef();
+  const buttonRef = React.useRef();
 
   /** Текущий пользователь */
   const currentUser = React.useContext(CurrentUserContext);
@@ -58,6 +59,7 @@ function Profile(props) {
   function handleClickButton(evt) {
     evt.preventDefault();
     if (isEditProfile) {
+      buttonRef.current.focus();
       saveDataProfile();
       setIsEditProfile(false);
     }
@@ -90,6 +92,7 @@ function Profile(props) {
     props.handleSignOutClick();
   }
 
+  /** При размонтировании компонента сбросить поля формы и текст сообщения от Api */
   React.useEffect(() => {
     return () => {
       resetForm();
@@ -164,7 +167,11 @@ function Profile(props) {
         <span className="profile-form__error-input">{errors.email}</span>
         
         <span className={classListTextResultFromApi}>{props.messageFromApi}</span>
-        <button className={createClassListButton()} type="submit" onClick={handleClickButton}>
+        <button
+          className={createClassListButton()}
+          type="submit" onClick={handleClickButton}
+          ref={buttonRef}
+        >
           {buttonText}
         </button>
       </form>

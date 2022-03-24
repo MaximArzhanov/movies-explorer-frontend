@@ -14,17 +14,14 @@ import auth from '../../utils/Auth';
 import mainApi from '../../utils/MainApi';
 import moviesApi from '../../utils/MoviesApi';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import { errorMessageFromBeatFilmApi } from '../../utils/constants'
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import {
   searchMovies,
   prepareMovieObject,
   findMoviesCreatedByCurrentUser,
-  returnMessageFromApi,
   performErrorResponse
 } from '../../utils/utils';
-
-import { errorMessageFromBeatFilmApi } from '../../utils/constants'
-
-import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
 function App() {
 
@@ -79,10 +76,6 @@ function App() {
 
    /** Текущий пользователь */
    const [isLoading, setIsLoading] = React.useState(false);
-
-  function onFormPage() {
-    setMessageFromApi('');
-  }
 
   /** Если пользователь на главной странице (Main) то включается синяя тема для Header */
   function onLandingPage(state) {
@@ -184,7 +177,7 @@ function App() {
       if (res.ok) { // Если ответ пришёл без ошибки
         res.json()
           .then((data) => {
-            setCurrentUser(data);
+            setCurrentUser(data.data);
             setMessageFromApi('Информация успешно обновлена');
           })
           .catch((err) => { console.error(err); });
@@ -194,8 +187,6 @@ function App() {
     .catch((err) => { console.error(err); })
     .finally(() => { setIsLoading(false); });
   }
-
-
 
   /** Выходит из аккаунта. Удаляет токен */
   function handleSignOutClick() {
@@ -376,7 +367,7 @@ function App() {
             <Login
               handleUserAuthorization={handleUserAuthorization}
               messageFromApi={messageFromApi}
-              onFormPage={onFormPage}
+              resetMessageFromApi={resetMessageFromApi}
               isLoading={isLoading}
             />
           </Route>
@@ -385,7 +376,7 @@ function App() {
             <Register
               handleUserRegister={handleUserRegister}
               messageFromApi={messageFromApi}
-              onFormPage={onFormPage}
+              resetMessageFromApi={resetMessageFromApi}
               isLoading={isLoading}
             />
           </Route>

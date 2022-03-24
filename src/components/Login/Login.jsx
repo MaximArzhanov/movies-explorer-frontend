@@ -20,7 +20,7 @@ function Login(props) {
       onSubmit={props.handleUserAuthorization}
       isOnLoginPage={isOnLoginPage}
       messageFromApi={props.messageFromApi}
-      onFormPage={props.onFormPage}
+      resetMessageFromApi={props.resetMessageFromApi}
       isLoading={props.isLoading}
     />
   );
