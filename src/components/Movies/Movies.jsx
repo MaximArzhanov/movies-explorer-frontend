@@ -149,6 +149,7 @@ function Movies(props) {
         messageFromApi={props.messageFromApi}
         isOnMoviesPage={isOnMoviesPage}
         resetBufferFoundMovies={resetBufferFoundMovies}
+        foundMovies={moviesForPage}
       />
       {
         props.isLoading

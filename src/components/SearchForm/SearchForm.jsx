@@ -7,12 +7,16 @@ function SearchForm(props) {
   const [isValid, setIsValid] = React.useState(false);
 
   const keyWordRef = React.useRef();
+  const checkboxRef = React.useRef();
 
   const [checkboxOnlyShortMovies, setСheckboxOnlyShortMovies] = React.useState(false);
 
   /** Записывает значение чекбокса в стейт-переменную */
   function handleChangeCheckbox(e) {
     setСheckboxOnlyShortMovies(e.target.checked);
+    if (props.foundMovies.length !== 0) {
+      props.handleSubmitSearch(keyWordRef.current.value, checkboxRef.current.checked);
+    }
   }
 
   React.useEffect(() => {
@@ -85,7 +89,7 @@ function SearchForm(props) {
         <label className="search-form__label-filter">
           <input className="search-form__invisible-checkbox"
             type="checkbox" name="short-movies"
-            checked={checkboxOnlyShortMovies} onChange={handleChangeCheckbox}
+            checked={checkboxOnlyShortMovies} onChange={handleChangeCheckbox} ref={checkboxRef}
           />
           <span className="search-form__visible-checkbox"></span>
           <span className="search-form__label-text">Короткометражки</span>
