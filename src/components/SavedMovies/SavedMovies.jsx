@@ -34,6 +34,7 @@ function SavedMovies(props) {
     <section className="saved-movies">
       <SearchForm
         handleSubmitSearch={props.handleSubmitSearchOnSavedMoviePage}
+        isOnSavedMoviesPage={isOnSavedMoviesPage}
       />
       <MoviesCardList
         foundMovies={props.foundSavedMovies}

@@ -188,12 +188,20 @@ function App() {
     .finally(() => { setIsLoading(false); });
   }
 
-  /** Выходит из аккаунта. Удаляет токен */
-  function handleSignOutClick() {
+  function resetLocalStorage() {
     localStorage.removeItem("jwt");
     localStorage.removeItem("recentFoundMovies");
     localStorage.removeItem("recentFoundSavedMovies");
     localStorage.removeItem("allMovies");
+    localStorage.removeItem("textOfQueryOnMoviePage");
+    localStorage.removeItem("textOfQueryOnSavedMoviePage");
+    localStorage.removeItem("checkboxStateOnMoviePage");
+    localStorage.removeItem("checkboxStateOnSavedMoviePage");
+  }
+
+  /** Выходит из аккаунта. Удаляет токен */
+  function handleSignOutClick() {
+    resetLocalStorage();
     setFoundMovies([]);
     setLoggedIn(false);
     history.push('/');
@@ -204,9 +212,23 @@ function App() {
     else { setIsMoviesWereFound(false); }
   }
 
-  function handleFoundMoviesArray(foundMoviesArray) {
-    determineIfMoviesAreFound(foundMoviesArray);
+  /** Обновляет данные в локальном хранилище при поиске фильмов на странице Movies */
+  function updateLocalStorageMoviesValues(foundMoviesArray, keyWord, checkboxOnlyShortMovies ) {
+    localStorage.setItem("textOfQueryOnMoviePage", keyWord);
+    localStorage.setItem("checkboxStateOnMoviePage", checkboxOnlyShortMovies);
     localStorage.setItem("recentFoundMovies", JSON.stringify(foundMoviesArray));
+  }
+
+  /** Обновляет данные в локальном хранилище при поиске фильмов на странице SavedMovies */
+  function updateLocalStorageSavedMoviesValues(foundSavedMoviesArray, keyWord, checkboxOnlyShortMovies ) {
+    localStorage.setItem("textOfQueryOnSavedMoviePage", keyWord);
+    localStorage.setItem("checkboxStateOnSavedMoviePage", checkboxOnlyShortMovies);
+    localStorage.setItem("recentFoundSavedMovies", JSON.stringify(foundSavedMoviesArray));
+  }
+
+  function handleFoundMoviesArray(foundMoviesArray, keyWord, checkboxOnlyShortMovies) {
+    determineIfMoviesAreFound(foundMoviesArray);
+    updateLocalStorageMoviesValues(foundMoviesArray, keyWord, checkboxOnlyShortMovies);
     setFoundMovies(foundMoviesArray);
   }
 
@@ -215,14 +237,14 @@ function App() {
     if (localStorage.getItem('allMovies')) { // Если ранее выполнялся запрос к АPI
       const allMovies = JSON.parse(localStorage.getItem('allMovies'));
       const foundMoviesArray = searchMovies(allMovies, keyWord, checkboxOnlyShortMovies);
-      handleFoundMoviesArray(foundMoviesArray);
+      handleFoundMoviesArray(foundMoviesArray, keyWord, checkboxOnlyShortMovies);
     } else { // Если запрос к API не выполнялся (В локальном хранилище нет всех фильмов)
       setIsLoading(true);
       moviesApi.getBeatfilmMovies()
         .then((data) => {
           localStorage.setItem("allMovies", JSON.stringify(data));
           const foundMoviesArray = searchMovies(data, keyWord, checkboxOnlyShortMovies);
-          handleFoundMoviesArray(foundMoviesArray);
+          handleFoundMoviesArray(foundMoviesArray, keyWord, checkboxOnlyShortMovies);
         })
         .catch((err) => {
           setMessageFromApi(errorMessageFromBeatFilmApi);
@@ -236,7 +258,7 @@ function App() {
   function handleSubmitSearchOnSavedMoviePage(keyWord, checkboxOnlyShortMovies) {
     const foundSavedMoviesArray = searchMovies(savedMovies, keyWord, checkboxOnlyShortMovies);
     determineIfMoviesAreFound(foundSavedMoviesArray);
-    localStorage.setItem("recentFoundSavedMovies", JSON.stringify(foundSavedMoviesArray));
+    updateLocalStorageSavedMoviesValues(foundSavedMoviesArray, keyWord, checkboxOnlyShortMovies);
     setFoundSavedMovies(foundSavedMoviesArray);
   }
   

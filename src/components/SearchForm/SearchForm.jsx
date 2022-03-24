@@ -1,5 +1,4 @@
 import React from 'react';
-import { useCallback } from "react";
 import './SearchForm.css';
 
 function SearchForm(props) {
@@ -9,16 +8,31 @@ function SearchForm(props) {
 
   const keyWordRef = React.useRef();
 
-  const [checkboxOnlyShortMovies, setcheckboxOnlyShortMovies] = React.useState(false);
+  const [checkboxOnlyShortMovies, setСheckboxOnlyShortMovies] = React.useState(false);
 
   /** Записывает значение чекбокса в стейт-переменную */
   function handleChangeCheckbox(e) {
-    setcheckboxOnlyShortMovies(e.target.checked);
+    setСheckboxOnlyShortMovies(e.target.checked);
   }
 
   React.useEffect(() => {
     setError(props.messageFromApi);
   }, [props.messageFromApi]);
+
+  React.useEffect(() => {
+    if (props.isOnMoviesPage) {
+      const textOfQuery = localStorage.getItem("textOfQueryOnMoviePage");
+      const checkBoxState = JSON.parse(localStorage.getItem("checkboxStateOnMoviePage"));
+      if (textOfQuery) { keyWordRef.current.value = textOfQuery; }
+      if (checkBoxState) { setСheckboxOnlyShortMovies(checkBoxState); }
+    }
+    if (props.isOnSavedMoviesPage) {
+      const textOfQuery = localStorage.getItem("textOfQueryOnSavedMoviePage");
+      const checkBoxState = JSON.parse(localStorage.getItem("checkboxStateOnSavedMoviePage"));
+      if (textOfQuery) { keyWordRef.current.value = textOfQuery; }
+      if (checkBoxState) { setСheckboxOnlyShortMovies(checkBoxState); }
+    }
+  }, [props.isOnMoviesPage, props.isOnSavedMoviesPage]);
 
   function handleSubmit(e) {
     e.preventDefault();
