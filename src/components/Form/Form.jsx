@@ -1,6 +1,7 @@
 import React from 'react';
 import { useCallback } from "react";
 import './Form.css';
+import { checkEmailIsFormat } from '../../utils/utils'
 
 function Form(props) {
 
@@ -100,18 +101,6 @@ function Form(props) {
       return (isValid ? 'form__button' : 'form__button form__button_disabled');
     }
   };
-
-  function checkEmailIsFormat(email) {
-    const regex = /^(([^<>()[\]\\.,;:\s@\\"]+(\.[^<>()[\]\\.,;:\s@\\"]+)*)|(\\".+\\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    return regex.test(email);
-  }
-
-  /** Убирает всплывающее сообщение валидации */
-  function removeDefaultMessageValidation(e) {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-    }
-  }
 
   return (
     <form className="form" onSubmit={handleSubmit}>

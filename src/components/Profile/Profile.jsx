@@ -3,6 +3,7 @@ import { useCallback } from "react";
 import { Link } from "react-router-dom";
 import './Profile.css';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { checkEmailIsFormat } from '../../utils/utils'
 
 function Profile(props) {
 
@@ -126,6 +127,16 @@ function Profile(props) {
     setValues({...values, [name]: value});
     setErrors({...errors, [name]: target.validationMessage });
     setIsValid(target.closest("form").checkValidity());
+    if (emailRef.current.validity.valid) {
+      if (checkEmailIsFormat(emailRef.current.value)) { // Дополнительная валидация поля email
+        setIsValid(true);
+        setIsValid(target.closest("form").checkValidity());
+        setErrors({...errors, [name]: target.validationMessage });
+      } else {
+        setIsValid(false);
+        setErrors({...errors, [emailRef.current.name]: 'email должен соответствовать формату: user@email.domain' });
+      }
+    }
     checkIsDataNotEquals();
   };
 
