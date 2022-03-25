@@ -14,14 +14,24 @@ import auth from '../../utils/Auth';
 import mainApi from '../../utils/MainApi';
 import moviesApi from '../../utils/MoviesApi';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-import { errorMessageFromBeatFilmApi } from '../../utils/constants'
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+
 import {
   searchMovies,
   prepareMovieObject,
   findMoviesCreatedByCurrentUser,
   performErrorResponse
 } from '../../utils/utils';
+
+import {
+  ERROR_MESSAGE_FROM_BEATFILM_API,
+  JWT,
+  MESSAGE_EDIT_PROFILE_SUCCESS,
+  RECENT_FOUND_MOVIES,
+  ALL_MOVIES,
+  TEXT_OF_QUERY_ON_MOVIE_PAGE,
+  CHECKBOX_STATE_ON_MOVIE_PAGE
+} from '../../utils/config'
 
 function App() {
 
@@ -39,7 +49,7 @@ function App() {
     будет происходить Redirect на главную страницу
     так как в компоненте ProtectedRoute осуществялется проверка
     вошёл ли пользователь в систему */
-    return localStorage.getItem("jwt") ? true : false;
+    return localStorage.getItem(JWT) ? true : false;
   });
 
   /** Сообщение от сервера ApiMoviesExplorer */
@@ -94,9 +104,9 @@ function App() {
 
   /** Проверяет наличие и актуальность токена */
   function checkToken() {
-    if (localStorage.getItem("jwt")) {
+    if (localStorage.getItem(JWT)) {
       setLoggedIn(true);
-      const jwt = localStorage.getItem("jwt");
+      const jwt = localStorage.getItem(JWT);
       auth.getContent(jwt)
         .then(() => {
           setLoggedIn(true);
@@ -117,7 +127,7 @@ function App() {
 
   /** Запрашивает карточки и информацию о пользователе */
   function getData() {
-    const jwt = localStorage.getItem("jwt");
+    const jwt = localStorage.getItem(JWT);
     Promise.all([ mainApi.getUserInformation(jwt), mainApi.getMovies(jwt) ])
       .then((res) => {
         if (res[0].ok && res[1].ok) { // Если ответ пришёл без ошибки
@@ -149,7 +159,7 @@ function App() {
           res.json()
             .then((data) => {
               setLoggedIn(true);
-              localStorage.setItem("jwt", data.jwt);
+              localStorage.setItem(JWT, data.jwt);
               getData();
               history.push('/movies');
             })
@@ -180,14 +190,14 @@ function App() {
   /** Обновляет информацию о пользователе */
   function handleUpdateUser({ name, email }) {
     setIsLoading(true);
-    const jwt = localStorage.getItem("jwt");
+    const jwt = localStorage.getItem(JWT);
     mainApi.updateUserInformation(name, email, jwt)
     .then((res) => {
       if (res.ok) { // Если ответ пришёл без ошибки
         res.json()
           .then((data) => {
             setCurrentUser(data.data);
-            setMessageFromApi('Информация успешно обновлена');
+            setMessageFromApi(MESSAGE_EDIT_PROFILE_SUCCESS);
           })
           .catch((err) => { console.error(err); });
       }
@@ -198,14 +208,11 @@ function App() {
   }
 
   function resetLocalStorage() {
-    localStorage.removeItem("jwt");
-    localStorage.removeItem("recentFoundMovies");
-    localStorage.removeItem("recentFoundSavedMovies");
-    localStorage.removeItem("allMovies");
-    localStorage.removeItem("textOfQueryOnMoviePage");
-    localStorage.removeItem("textOfQueryOnSavedMoviePage");
-    localStorage.removeItem("checkboxStateOnMoviePage");
-    localStorage.removeItem("checkboxStateOnSavedMoviePage");
+    localStorage.removeItem(JWT);
+    localStorage.removeItem(RECENT_FOUND_MOVIES);
+    localStorage.removeItem(ALL_MOVIES);
+    localStorage.removeItem(TEXT_OF_QUERY_ON_MOVIE_PAGE);
+    localStorage.removeItem(CHECKBOX_STATE_ON_MOVIE_PAGE);
   }
 
   /** Выходит из аккаунта. Сбрасывает значения в LocalStorage */
@@ -223,9 +230,9 @@ function App() {
 
   /** Обновляет данные в локальном хранилище при поиске фильмов на странице Movies */
   function updateLocalStorageMoviesValues(foundMoviesArray, keyWord, checkboxOnlyShortMovies ) {
-    localStorage.setItem("textOfQueryOnMoviePage", keyWord);
-    localStorage.setItem("checkboxStateOnMoviePage", checkboxOnlyShortMovies);
-    localStorage.setItem("recentFoundMovies", JSON.stringify(foundMoviesArray));
+    localStorage.setItem(TEXT_OF_QUERY_ON_MOVIE_PAGE, keyWord);
+    localStorage.setItem(CHECKBOX_STATE_ON_MOVIE_PAGE, checkboxOnlyShortMovies);
+    localStorage.setItem(RECENT_FOUND_MOVIES, JSON.stringify(foundMoviesArray));
   }
 
   function handleFoundMoviesArray(foundMoviesArray, keyWord, checkboxOnlyShortMovies) {
@@ -236,20 +243,20 @@ function App() {
 
   /** Запрашивает фильмы с Api BeatFilm (Поиск на странице Movies) */
   function handleSubmitSearchOnMoviePage(keyWord, checkboxOnlyShortMovies) {
-    if (localStorage.getItem('allMovies')) { // Если ранее выполнялся запрос к АPI
-      const allMovies = JSON.parse(localStorage.getItem('allMovies'));
+    if (localStorage.getItem(ALL_MOVIES)) { // Если ранее выполнялся запрос к АPI
+      const allMovies = JSON.parse(localStorage.getItem(ALL_MOVIES));
       const foundMoviesArray = searchMovies(allMovies, keyWord, checkboxOnlyShortMovies);
       handleFoundMoviesArray(foundMoviesArray, keyWord, checkboxOnlyShortMovies);
     } else { // Если запрос к API не выполнялся (В локальном хранилище нет всех фильмов)
       setIsLoading(true);
       moviesApi.getBeatfilmMovies()
         .then((data) => {
-          localStorage.setItem("allMovies", JSON.stringify(data));
+          localStorage.setItem(ALL_MOVIES, JSON.stringify(data));
           const foundMoviesArray = searchMovies(data, keyWord, checkboxOnlyShortMovies);
           handleFoundMoviesArray(foundMoviesArray, keyWord, checkboxOnlyShortMovies);
         })
         .catch((err) => {
-          setMessageFromApi(errorMessageFromBeatFilmApi);
+          setMessageFromApi(ERROR_MESSAGE_FROM_BEATFILM_API);
           console.error(err);
         })
         .finally(() => { setIsLoading(false); });
@@ -265,7 +272,7 @@ function App() {
   
   /** Отправляет запрос на сохранение карточки с фильмом */
   function handleMovieSave(movie) {
-    const jwt = localStorage.getItem("jwt");
+    const jwt = localStorage.getItem(JWT);
     mainApi.saveMovie(prepareMovieObject(movie), jwt)
       .then((res) => {
         if (res.ok) { // Если ответ пришёл без ошибки
@@ -282,7 +289,7 @@ function App() {
 
   /** Удаляет карточку  */
   function handleMovieDelete(movieId) {
-    const jwt = localStorage.getItem("jwt");
+    const jwt = localStorage.getItem(JWT);
     mainApi.deleteCard(movieId, jwt)
       .then((res) => {
         if (res.ok) { // Если ответ пришёл без ошибки

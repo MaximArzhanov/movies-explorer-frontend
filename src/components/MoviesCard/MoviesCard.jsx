@@ -1,12 +1,12 @@
 import React from 'react';
 import './MoviesCard.css';
-import { baseUrlForImage } from '../../utils/constants';
+import { BASE_URL_IMAGE } from '../../utils/config'
 
 function MoviesCard(props) {
 
   const { nameRU, duration, trailerLink, image } = props.foundMovie;
 
-  const imageUrl = (props.isOnSavedMoviesPage ? image : (baseUrlForImage.slice(0, -1) + image.url));
+  const imageUrl = (props.isOnSavedMoviesPage ? image : (BASE_URL_IMAGE.slice(0, -1) + image.url));
 
   let isMovieSaved = false;
   let savedMovieId = '';

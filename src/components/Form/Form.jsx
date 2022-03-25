@@ -3,6 +3,12 @@ import { useCallback } from "react";
 import './Form.css';
 import { checkEmailIsFormat } from '../../utils/utils'
 
+import { 
+  MESSAGE_EMAIL_MUST_MATCH_FORMAT,
+  MIN_LENGTH_INPUT,
+  MAX_LENGTH_INPUT
+ } from '../../utils/config'
+
 function Form(props) {
 
   const emailRef = React.useRef();
@@ -78,7 +84,7 @@ function Form(props) {
         setErrors({...errors, [name]: target.validationMessage });
       } else {
         setIsValid(false);
-        setErrors({...errors, [emailRef.current.name]: 'email должен соответствовать формату: user@email.domain' });
+        setErrors({...errors, [emailRef.current.name]: MESSAGE_EMAIL_MUST_MATCH_FORMAT });
       }
     }
   };
@@ -114,8 +120,8 @@ function Form(props) {
           type="text"
           name="name"
           required
-          minLength={2}
-          maxLength={30}
+          minLength={MIN_LENGTH_INPUT}
+          maxLength={MAX_LENGTH_INPUT}
           value={name || ""}
           onChange={handleChangeName}
           autoComplete="off"

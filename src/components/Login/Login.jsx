@@ -9,6 +9,7 @@ function Login(props) {
   const [isOnLoginPage, setIsOnLoginPage] = React.useState(false);
 
   React.useEffect(() => {
+    // Если пользователь уже зарегистрирован, то происходит редирект на главную страницу
     if (props.loggedIn) { history.push('/'); }
     setIsOnLoginPage(true);
 

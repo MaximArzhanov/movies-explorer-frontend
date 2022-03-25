@@ -1,10 +1,11 @@
-import { baseUrlMoviesExplorerApi } from './constants.js';
+import { BASE_URL_MOVIES_EXPLORER_API } from './config'
 
 class MainApi {
-  constructor(baseUrlMoviesExplorerApi) {
-    this._baseUrl = baseUrlMoviesExplorerApi;
+  constructor(BASE_URL_MOVIES_EXPLORER_API) {
+    this._baseUrl = BASE_URL_MOVIES_EXPLORER_API;
   }
 
+  /** Получает информацию о пользователе */
   getUserInformation(jwt) {
     return fetch(`${this._baseUrl}users/me`, {
       headers: {
@@ -14,6 +15,7 @@ class MainApi {
     .then((res) => { return res; })
   }
 
+  /** Обновляет информацию о пользователе */
   updateUserInformation(nameUser, emailUser, jwt) {
     return fetch(`${this._baseUrl}users/me`, {
       method: 'PATCH',
@@ -29,6 +31,7 @@ class MainApi {
     .then((res) => { return res; })
   }
 
+  /** Запрашивает все фильмы из базы данных */
   getMovies(jwt) {
     return fetch(`${this._baseUrl}movies`, {
       headers: {
@@ -51,6 +54,7 @@ class MainApi {
     .then((res) => { return res })
   }
 
+  /** Удаляет фильм из базы данных */
   deleteCard(movieId, jwt) {
     return fetch(`${this._baseUrl}movies/${movieId}`, {
       method: 'DELETE',
@@ -63,5 +67,5 @@ class MainApi {
 
 }
 
-const mainApi = new MainApi(baseUrlMoviesExplorerApi);
+const mainApi = new MainApi(BASE_URL_MOVIES_EXPLORER_API);
 export default mainApi;

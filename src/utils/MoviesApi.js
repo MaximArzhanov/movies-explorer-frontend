@@ -1,8 +1,8 @@
-import { baseUrlBeatfilmMovies } from './constants.js';
+import { BASE_URL_BEATFILM_MOVIES_API } from './config'
 
 class MoviesApi {
-  constructor(baseUrlBeatfilmMovies) {
-    this._baseUrl = baseUrlBeatfilmMovies;
+  constructor(BASE_URL_BEATFILM_MOVIES_API) {
+    this._baseUrl = BASE_URL_BEATFILM_MOVIES_API;
   }
 
   getBeatfilmMovies() {
@@ -18,5 +18,5 @@ class MoviesApi {
 
 }
 
-const moviesApi = new MoviesApi(baseUrlBeatfilmMovies);
+const moviesApi = new MoviesApi(BASE_URL_BEATFILM_MOVIES_API);
 export default moviesApi;

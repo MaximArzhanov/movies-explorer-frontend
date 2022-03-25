@@ -4,6 +4,18 @@ import SearchForm from '../SearchForm/SearchForm'
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader'
 
+import {
+  SCREEN_SIZE_SMALL,
+  SCREEN_SIZE_LARGE,
+  MAX_QUANTITY_REQUIRED_CARDS_1,
+  MAX_QUANTITY_REQUIRED_CARDS_2,
+  MAX_QUANTITY_REQUIRED_CARDS_3,
+  MAX_QUANTITY_REQUIRED_CARDS_5,
+  MAX_QUANTITY_REQUIRED_CARDS_8,
+  MAX_QUANTITY_REQUIRED_CARDS_12,
+  MESSAGE_NOTHING_FOUND
+} from '../../utils/config'
+
 // Индекс для отслеживания элемента в массиве найденных фильмов (foundMovies)
 let startIndex = 0;
 
@@ -68,17 +80,17 @@ function Movies(props) {
   function determineMaxQuantityRequiredOfCards() {
     updateInitialArrayOfCardsShowed(bufferFoundMovies.length)
     const widthOfScreen = document.documentElement.clientWidth;
-    if (widthOfScreen < 624) {
-      if (initialArrayOfCardsShowed) { maxQuantityRequiredOfCards = 1; }
-      else { maxQuantityRequiredOfCards = 5; }
+    if (widthOfScreen <= SCREEN_SIZE_SMALL) {
+      if (initialArrayOfCardsShowed) { maxQuantityRequiredOfCards = MAX_QUANTITY_REQUIRED_CARDS_1; }
+      else { maxQuantityRequiredOfCards = MAX_QUANTITY_REQUIRED_CARDS_5; }
     }
-    if (widthOfScreen > 623 && widthOfScreen < 1134) {
-      if (initialArrayOfCardsShowed) { maxQuantityRequiredOfCards = 2; }
-      else { maxQuantityRequiredOfCards = 8; }
+    if (widthOfScreen > SCREEN_SIZE_SMALL && widthOfScreen < SCREEN_SIZE_LARGE) {
+      if (initialArrayOfCardsShowed) { maxQuantityRequiredOfCards = MAX_QUANTITY_REQUIRED_CARDS_2; }
+      else { maxQuantityRequiredOfCards = MAX_QUANTITY_REQUIRED_CARDS_8; }
     }
-    if (widthOfScreen > 1133) {
-      if (initialArrayOfCardsShowed) { maxQuantityRequiredOfCards = 3;}
-      else { maxQuantityRequiredOfCards = 12; }
+    if (widthOfScreen >= SCREEN_SIZE_LARGE) {
+      if (initialArrayOfCardsShowed) { maxQuantityRequiredOfCards = MAX_QUANTITY_REQUIRED_CARDS_3;}
+      else { maxQuantityRequiredOfCards = MAX_QUANTITY_REQUIRED_CARDS_12; }
     }
   }
 
@@ -164,7 +176,7 @@ function Movies(props) {
                 sMoviesCardListFull={false}
                 handleClickButtonLoadMore={handleClickButtonLoadMore}
               />
-              <p className="movies__message">{props.isMoviesWereFound || 'Ничего не найдено'}</p>
+              <p className="movies__message">{props.isMoviesWereFound || MESSAGE_NOTHING_FOUND}</p>
             </>
       }
       

@@ -1,8 +1,8 @@
-import { baseUrlMoviesExplorerApi } from './constants.js';
+import { BASE_URL_MOVIES_EXPLORER_API } from './config'
 
 class Auth {
-  constructor(baseUrlMoviesExplorerApi) {
-    this._baseUrl = baseUrlMoviesExplorerApi;
+  constructor(BASE_URL_MOVIES_EXPLORER_API) {
+    this._baseUrl = BASE_URL_MOVIES_EXPLORER_API;
   }
 
   register(name, email, password) {
@@ -18,14 +18,6 @@ class Auth {
       })
     })
     .then((res) => { return res; })
-    // .then((res) => { 
-    //   if (res.ok) {
-    //     return res.json();
-    //   } else {
-    //     // res.json().then((data) => { return Promise.reject(data.message) });
-    //     return Promise.reject()
-    //   }
-    // })
   };
 
   authorization(email, password) {
@@ -55,5 +47,5 @@ class Auth {
 
 }
 
-const auth = new Auth(baseUrlMoviesExplorerApi);
+const auth = new Auth(BASE_URL_MOVIES_EXPLORER_API);
 export default auth;

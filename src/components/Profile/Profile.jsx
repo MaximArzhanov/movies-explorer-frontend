@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import './Profile.css';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { checkEmailIsFormat } from '../../utils/utils'
+import { MESSAGE_EMAIL_MUST_MATCH_FORMAT, MESSAGE_EDIT_PROFILE_SUCCESS } from '../../utils/config'
 
 function Profile(props) {
 
@@ -54,7 +55,7 @@ function Profile(props) {
     ? 'Сохранить'
     : 'Редактировать';
 
-  const classListTextResultFromApi = (props.messageFromApi === 'Информация успешно обновлена')
+  const classListTextResultFromApi = (props.messageFromApi === MESSAGE_EDIT_PROFILE_SUCCESS)
     ? 'profile-form__text-result'
     : 'profile-form__text-result profile-form__text-result_type_error';
   
@@ -134,7 +135,7 @@ function Profile(props) {
         setErrors({...errors, [name]: target.validationMessage });
       } else {
         setIsValid(false);
-        setErrors({...errors, [emailRef.current.name]: 'email должен соответствовать формату: user@email.domain' });
+        setErrors({...errors, [emailRef.current.name]: MESSAGE_EMAIL_MUST_MATCH_FORMAT });
       }
     }
     checkIsDataNotEquals();

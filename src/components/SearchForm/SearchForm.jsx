@@ -1,6 +1,12 @@
 import React from 'react';
 import './SearchForm.css';
 
+import {
+  TEXT_OF_QUERY_ON_MOVIE_PAGE,
+  CHECKBOX_STATE_ON_MOVIE_PAGE,
+  MESSAGE_NEED_ENTER_KEYWORD
+} from '../../utils/config'
+
 let isMoviesWereShowed = false;
 
 function SearchForm(props) {
@@ -32,23 +38,12 @@ function SearchForm(props) {
 
   React.useEffect(() => {
     if (props.isOnMoviesPage) {
-      const textOfQuery = localStorage.getItem("textOfQueryOnMoviePage");
-      const checkBoxState = JSON.parse(localStorage.getItem("checkboxStateOnMoviePage"));
+      const textOfQuery = localStorage.getItem(TEXT_OF_QUERY_ON_MOVIE_PAGE);
+      const checkBoxState = JSON.parse(localStorage.getItem(CHECKBOX_STATE_ON_MOVIE_PAGE));
       if (textOfQuery) { keyWordRef.current.value = textOfQuery; }
       if (checkBoxState) { setСheckboxOnlyShortMovies(checkBoxState); }
     }
-    if (props.isOnSavedMoviesPage) {
-      const textOfQuery = localStorage.getItem("textOfQueryOnSavedMoviePage");
-      const checkBoxState = JSON.parse(localStorage.getItem("checkboxStateOnSavedMoviePage"));
-      if (textOfQuery) { keyWordRef.current.value = textOfQuery; }
-      if (checkBoxState) { setСheckboxOnlyShortMovies(checkBoxState); }
-
-      // Выполнить запрос на поиск фильм в соответствии с ранее введённым запросом
-      if (textOfQuery) {
-        props.handleSubmitSearch(keyWordRef.current.value, checkBoxState);
-      }
-    }
-  }, [props.isOnMoviesPage, props.isOnSavedMoviesPage]);
+  }, [props.isOnMoviesPage]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -61,7 +56,7 @@ function SearchForm(props) {
   /** Проверяет валидность поля (На наличие текста) */
   function checkValidation() {
     if (keyWordRef.current.value === '') {
-      setError('Нужно ввести ключевое слово');
+      setError(MESSAGE_NEED_ENTER_KEYWORD);
       setIsValid(false);
       return false;
     } else {

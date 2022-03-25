@@ -9,6 +9,7 @@ function Register(props) {
   const [isOnRegisterPage, setIsOnRegisterPage] = React.useState(false);
 
   React.useEffect(() => {
+    // Если пользователь уже зарегистрирован, то происходит редирект на главную страницу
     if (props.loggedIn) { history.push('/'); }
     setIsOnRegisterPage(true);
     return () => setIsOnRegisterPage(false);

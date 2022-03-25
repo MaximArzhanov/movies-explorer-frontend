@@ -1,6 +1,4 @@
-import {
-  baseUrlForImage
-} from './constants.js';
+import { BASE_URL_IMAGE, DURATION_SHORT_MOVIE, MESSAGE_NEED_ENTER_KEYWORD } from './config'
 
 /** Фильтрует массив с фильмами по ключевому слову и чекбоксу */
 function searchMovies(allMovies, keyWord, checkboxOnlyShortMovies) {
@@ -10,13 +8,14 @@ function searchMovies(allMovies, keyWord, checkboxOnlyShortMovies) {
 
   if (keyWord === '*') { // Если введён символ "*", то отображаются все фильмы
     arrayMovies = checkboxOnlyShortMovies
-      ? allMovies.filter((movie) => { return (movie.duration < 40); })
+      ? allMovies.filter((movie) => { return (movie.duration < DURATION_SHORT_MOVIE); })
       : allMovies;
   }
   else {
     arrayMovies = checkboxOnlyShortMovies
       ? allMovies.filter((movie) => {
-        return (movie.duration < 40 && movie.nameRU.toUpperCase().includes(keyWord.toUpperCase()));
+        return (movie.duration < DURATION_SHORT_MOVIE
+              && movie.nameRU.toUpperCase().includes(keyWord.toUpperCase()));
       })
       : allMovies.filter((movie) => {
         return (movie.nameRU.toUpperCase().includes(keyWord.toUpperCase()));
@@ -28,13 +27,13 @@ function searchMovies(allMovies, keyWord, checkboxOnlyShortMovies) {
 
 /** Подготавливает объект для отправки запроса */
 function prepareMovieObject({...movie}) {
-  const image = baseUrlForImage.slice(0, -1) + movie.image.url;
-  const country = movie.country ? movie.country : 'Нет информации';
-  const nameEN = movie.nameEN ? movie.nameEN : 'Нет информации';
-  const nameRU = movie.nameRU ? movie.nameRU : 'Нет информации';
-  const director = movie.director ? movie.director : 'Нет информации';
-  const description = movie.description ? movie.description : 'Нет информации';
-  const duration = movie.duration ? movie.duration : 'Нет информации';
+  const image = BASE_URL_IMAGE.slice(0, -1) + movie.image.url;
+  const country = movie.country ? movie.country : MESSAGE_NEED_ENTER_KEYWORD;
+  const nameEN = movie.nameEN ? movie.nameEN : MESSAGE_NEED_ENTER_KEYWORD;
+  const nameRU = movie.nameRU ? movie.nameRU : MESSAGE_NEED_ENTER_KEYWORD;
+  const director = movie.director ? movie.director : MESSAGE_NEED_ENTER_KEYWORD;
+  const description = movie.description ? movie.description : MESSAGE_NEED_ENTER_KEYWORD;
+  const duration = movie.duration ? movie.duration : MESSAGE_NEED_ENTER_KEYWORD;
   const movieId = movie.id;
   const thumbnail = image;
   const trailerLink = movie.trailerLink ? movie.trailerLink : image;
@@ -44,6 +43,7 @@ function prepareMovieObject({...movie}) {
   return {...movie, image, thumbnail, country, movieId, nameEN, nameRU, trailerLink, director, description, duration};
 }
 
+/** Фильтрует фильмы сохранённые текущим пользователем */
 function findMoviesCreatedByCurrentUser(movies, currentUserId) {
   const moviesOfCurrentUser = movies.filter(movie => movie.owner === currentUserId);
   return moviesOfCurrentUser;
@@ -62,6 +62,7 @@ function returnMessageFromApi(data) {
   }
 }
 
+/** Выполняется в случае прихода ошибки от Api */
 function performErrorResponse(res, handleMessageFromApi) {
   res.json()
   .then((data) => {
@@ -74,6 +75,7 @@ function performErrorResponse(res, handleMessageFromApi) {
   .catch((err) => { console.error(err); });
 }
 
+/** Проверяет email на соответствие формату */
 function checkEmailIsFormat(email) {
   const regex = /[\w-]{2,}@[\w]{2,}\.[\w]{2,}/
   return regex.test(email);
