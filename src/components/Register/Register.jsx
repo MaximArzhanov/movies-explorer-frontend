@@ -1,11 +1,15 @@
 import React from "react";
+import { useHistory, } from 'react-router-dom';
 import AuthPage from "../AuthPage/AuthPage";
 
 function Register(props) {
 
+  const history = useHistory();
+
   const [isOnRegisterPage, setIsOnRegisterPage] = React.useState(false);
 
   React.useEffect(() => {
+    if (props.loggedIn) { history.push('/'); }
     setIsOnRegisterPage(true);
     return () => setIsOnRegisterPage(false);
   }, [])

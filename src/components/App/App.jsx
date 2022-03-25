@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory, Redirect } from 'react-router-dom';
 import './App.css';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
@@ -34,7 +34,13 @@ function App() {
   const [headerThemeBlue, setHeaderThemeBlue] = React.useState(false);
 
   /** Состояние авторизации */
-  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [loggedIn, setLoggedIn] = React.useState(() => {
+    /* Пояснение: Если задавать изначально значение false то
+    будет происходить Redirect на главную страницу
+    так как в компоненте ProtectedRoute осуществялется проверка
+    вошёл ли пользователь в систему */
+    return localStorage.getItem("jwt") ? true : false;
+  });
 
   /** Сообщение от сервера ApiMoviesExplorer */
   const [messageFromApi, setMessageFromApi] = React.useState('');
@@ -74,7 +80,7 @@ function App() {
     setMessageFromApi('');
   }
 
-   /** Текущий пользователь */
+   /** Состояние загрузки */
    const [isLoading, setIsLoading] = React.useState(false);
 
   /** Если пользователь на главной странице (Main) то включается синяя тема для Header */
@@ -89,16 +95,19 @@ function App() {
   /** Проверяет наличие и актуальность токена */
   function checkToken() {
     if (localStorage.getItem("jwt")) {
+      setLoggedIn(true);
       const jwt = localStorage.getItem("jwt");
       auth.getContent(jwt)
         .then(() => {
-          getData();
           setLoggedIn(true);
           setMessageFromApi('');
-          history.push('/movies');
+          getData();
         })
-        .catch((err) => { console.error(err); });
-    }
+        .catch((err) => {
+          setLoggedIn(false);
+          console.error(err);
+        });
+    } else { setLoggedIn(false); }
   }
 
   /** Проверяет наличие и актуальность токена при загрузке приложения */
@@ -251,7 +260,6 @@ function App() {
   function handleSubmitSearchOnSavedMoviePage(keyWord, checkboxOnlyShortMovies) {
     const foundSavedMoviesArray = searchMovies(savedMovies, keyWord, checkboxOnlyShortMovies);
     determineIfMoviesAreFound(foundSavedMoviesArray);
-    //updateLocalStorageSavedMoviesValues(foundSavedMoviesArray, keyWord, checkboxOnlyShortMovies);
     setFoundSavedMovies(foundSavedMoviesArray);
   }
   
@@ -293,6 +301,8 @@ function App() {
       })
       .catch((err) => { console.error(err); });
   }
+
+  console.log(loggedIn);
 
   return (
     <div className="app">
@@ -370,11 +380,12 @@ function App() {
             />
           </Route>
 
-          <Route path="/signin">
+          <Route exact path="/signin">
             <Login
               handleUserAuthorization={handleUserAuthorization}
               messageFromApi={messageFromApi}
               resetMessageFromApi={resetMessageFromApi}
+              loggedIn={loggedIn}
               isLoading={isLoading}
             />
           </Route>
@@ -384,6 +395,7 @@ function App() {
               handleUserRegister={handleUserRegister}
               messageFromApi={messageFromApi}
               resetMessageFromApi={resetMessageFromApi}
+              loggedIn={loggedIn}
               isLoading={isLoading}
             />
           </Route>
