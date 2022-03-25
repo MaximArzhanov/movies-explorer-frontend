@@ -11,8 +11,6 @@ function SavedMovies(props) {
    *  результаты последнего поиска
    */
   React.useEffect(() => {
-    props.onSavedMoviesPage(props.savedMovies);
-
     setIsOnSavedMoviesPage(true);
 
     return () => {
@@ -21,6 +19,11 @@ function SavedMovies(props) {
       setIsOnSavedMoviesPage(false);
     }
   }, []);
+
+  /** При монтировании компонента отображет все сохранённые карточки на странице SavedMovies */
+  React.useEffect(() => {
+    props.onSavedMoviesPage(props.savedMovies);
+  }, [props.savedMovies]);
 
   return (
     <section className="saved-movies">

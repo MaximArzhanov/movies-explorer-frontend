@@ -302,8 +302,6 @@ function App() {
       .catch((err) => { console.error(err); });
   }
 
-  console.log(loggedIn);
-
   return (
     <div className="app">
       <CurrentUserContext.Provider value={currentUser}>
