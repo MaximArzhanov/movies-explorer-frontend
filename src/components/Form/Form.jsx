@@ -71,6 +71,9 @@ function Form(props) {
     setValues({...values, [name]: value});
     setErrors({...errors, [name]: target.validationMessage });
     setIsValid(target.closest("form").checkValidity());
+
+    console.log(emailRef.current.validity.valid);
+
     if (emailRef.current.validity.valid) {
       if (checkEmailIsFormat(emailRef.current.value)) { // Дополнительная валидация поля email
         setIsValid(true);
