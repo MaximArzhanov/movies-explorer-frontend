@@ -4,6 +4,8 @@ import './Form.css';
 
 function Form(props) {
 
+  const emailRef = React.useRef();
+
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -67,7 +69,18 @@ function Form(props) {
     const value = target.value;
     setValues({...values, [name]: value});
     setErrors({...errors, [name]: target.validationMessage });
-    setIsValid(target.closest("form").checkValidity()); 
+    setIsValid(target.closest("form").checkValidity());
+
+    if (emailRef.current.validity.valid) {
+      if (checkEmailIsFormat(emailRef.current.value)) { // Дополнительная валидация поля email
+        setIsValid(true);
+        setIsValid(target.closest("form").checkValidity());
+        setErrors({...errors, [name]: target.validationMessage });
+      } else {
+        setIsValid(false);
+        setErrors({...errors, [emailRef.current.name]: 'email должен соответствовать формату: user@email.domain' });
+      }
+    }
   };
 
   const resetForm = useCallback(
@@ -87,6 +100,18 @@ function Form(props) {
       return (isValid ? 'form__button' : 'form__button form__button_disabled');
     }
   };
+
+  function checkEmailIsFormat(email) {
+    const regex = /^(([^<>()[\]\\.,;:\s@\\"]+(\.[^<>()[\]\\.,;:\s@\\"]+)*)|(\\".+\\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    return regex.test(email);
+  }
+
+  /** Убирает всплывающее сообщение валидации */
+  function removeDefaultMessageValidation(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  }
 
   return (
     <form className="form" onSubmit={handleSubmit}>
@@ -120,6 +145,8 @@ function Form(props) {
           value={email || ""}
           onChange={handleChangeEmail}
           autoComplete="off"
+          ref={emailRef}
+          // pattern='test@test'
       />
       <span className="form__error-input">{errors.email}</span>
       
