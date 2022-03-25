@@ -219,13 +219,6 @@ function App() {
     localStorage.setItem("recentFoundMovies", JSON.stringify(foundMoviesArray));
   }
 
-  /** Обновляет данные в локальном хранилище при поиске фильмов на странице SavedMovies */
-  function updateLocalStorageSavedMoviesValues(foundSavedMoviesArray, keyWord, checkboxOnlyShortMovies ) {
-    localStorage.setItem("textOfQueryOnSavedMoviePage", keyWord);
-    localStorage.setItem("checkboxStateOnSavedMoviePage", checkboxOnlyShortMovies);
-    localStorage.setItem("recentFoundSavedMovies", JSON.stringify(foundSavedMoviesArray));
-  }
-
   function handleFoundMoviesArray(foundMoviesArray, keyWord, checkboxOnlyShortMovies) {
     determineIfMoviesAreFound(foundMoviesArray);
     updateLocalStorageMoviesValues(foundMoviesArray, keyWord, checkboxOnlyShortMovies);
@@ -258,7 +251,7 @@ function App() {
   function handleSubmitSearchOnSavedMoviePage(keyWord, checkboxOnlyShortMovies) {
     const foundSavedMoviesArray = searchMovies(savedMovies, keyWord, checkboxOnlyShortMovies);
     determineIfMoviesAreFound(foundSavedMoviesArray);
-    updateLocalStorageSavedMoviesValues(foundSavedMoviesArray, keyWord, checkboxOnlyShortMovies);
+    //updateLocalStorageSavedMoviesValues(foundSavedMoviesArray, keyWord, checkboxOnlyShortMovies);
     setFoundSavedMovies(foundSavedMoviesArray);
   }
   
@@ -271,7 +264,6 @@ function App() {
           res.json()
             .then((newMovie) => {
               setSavedMovies([...savedMovies, newMovie.data]);
-              // test(newMovie.data);
             })
             .catch((err) => { console.error(err); });
         }
@@ -294,22 +286,12 @@ function App() {
               setFoundSavedMovies((state) => //Возвращает все карточки кроме той которую удалили
                 state.filter(foundSavedMovie => foundSavedMovie._id !== movieId)
               );
-              updateRecentFoundSavedMovies(movieId);
             })
             .catch((err) => { console.error(err); });
         }
         else { performErrorResponse(res, handleMessageFromApi); } // Если ответ пришёл с ошибкой
       })
       .catch((err) => { console.error(err); });
-  }
-
-  /** Обновляет список сохранённых фильмов в локальном хранилище при удалении фильма */
-  function updateRecentFoundSavedMovies(movieId) {
-    const recentFoundSavedMovies =  JSON.parse(localStorage.getItem("recentFoundSavedMovies"));
-    const newFoundSavedMovies = recentFoundSavedMovies.filter((foundSavedMovie) => {
-      return foundSavedMovie._id !== movieId;
-    });
-    localStorage.setItem("recentFoundSavedMovies", JSON.stringify(newFoundSavedMovies));
   }
 
   return (

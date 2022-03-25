@@ -11,11 +11,7 @@ function SavedMovies(props) {
    *  результаты последнего поиска
    */
   React.useEffect(() => {
-    const recentFoundSavedMovies = JSON.parse(localStorage.getItem("recentFoundSavedMovies"));
-    if (recentFoundSavedMovies) {
-      if (recentFoundSavedMovies.length !== 0) { props.onSavedMoviesPage(recentFoundSavedMovies); }
-    }
-    else { props.onSavedMoviesPage([]); }
+    props.onSavedMoviesPage(props.savedMovies);
 
     setIsOnSavedMoviesPage(true);
 
@@ -25,10 +21,6 @@ function SavedMovies(props) {
       setIsOnSavedMoviesPage(false);
     }
   }, []);
-
-  React.useEffect(() => {
-    localStorage.setItem("recentFoundSavedMovies", JSON.stringify(props.foundSavedMovies));
-  }, [props.foundSavedMovies]);
 
   return (
     <section className="saved-movies">
