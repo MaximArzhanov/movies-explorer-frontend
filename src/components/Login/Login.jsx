@@ -1,7 +1,20 @@
 import React from "react";
+import { useHistory, } from 'react-router-dom';
 import AuthPage from "../AuthPage/AuthPage";
 
 function Login(props) {
+
+  const history = useHistory();
+
+  const [isOnLoginPage, setIsOnLoginPage] = React.useState(false);
+
+  React.useEffect(() => {
+    // Если пользователь уже зарегистрирован, то происходит редирект на главную страницу
+    if (props.loggedIn) { history.push('/'); }
+    setIsOnLoginPage(true);
+
+    return () => setIsOnLoginPage(false);
+  }, [])
 
   return (
     <AuthPage
@@ -10,6 +23,11 @@ function Login(props) {
       textQuestion="Ещё не зарегистрированы?"
       textLink="Регистрация"
       linkRoute="/signup"
+      onSubmit={props.handleUserAuthorization}
+      isOnLoginPage={isOnLoginPage}
+      messageFromApi={props.messageFromApi}
+      resetMessageFromApi={props.resetMessageFromApi}
+      isLoading={props.isLoading}
     />
   );
 }

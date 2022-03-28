@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from "react-router-dom";
 import './Navigation.css';
+import { SCREEN_SIZE_MIDDLE, KEY_BUTTON_ESCAPE } from '../../utils/config'
 
 function Navigation(props) {
 
@@ -10,7 +11,7 @@ function Navigation(props) {
   /** Закрытие меню навигации при ширине экрана более 1023px */
   React.useEffect(() => {
     const handleResizeScreen = () => {
-      if(document.documentElement.clientWidth > 1023 && isNavigationMenuOpened)  {
+      if (document.documentElement.clientWidth > SCREEN_SIZE_MIDDLE && isNavigationMenuOpened) {
           setIsNavigationMenuOpened(false);
       }
     };
@@ -24,7 +25,7 @@ function Navigation(props) {
   /** Закрытие меню навигации нажатием на кнопку Escape */
   React.useEffect(() => {
     const closeNaviagationMenuByEscape = (e) => {
-      if (e.key === "Escape" && isNavigationMenuOpened) {
+      if (e.key === KEY_BUTTON_ESCAPE && isNavigationMenuOpened) {
         setIsNavigationMenuOpened(false);
       }
     }

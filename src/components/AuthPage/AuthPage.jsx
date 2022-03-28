@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import './AuthPage.css';
 import Logo from '../Logo/Logo';
-import Form from '../Form/From';
+import Form from '../Form/Form';
 
 function AuthPage(props) {
 
@@ -12,7 +12,16 @@ function AuthPage(props) {
       
       <h2 className="auth-page__title">{props.textTitle}</h2>
 
-      <Form textButton={props.textButton}>
+      <Form
+        textButton={props.textButton}
+        onSubmit={props.onSubmit}
+        name={props.name}
+        isOnRegisterPage={props.isOnRegisterPage}
+        isOnLoginPage={props.isOnLoginPage}
+        messageFromApi={props.messageFromApi}
+        resetMessageFromApi={props.resetMessageFromApi}
+        isLoading={props.isLoading}
+      >
         {props.children}
       </Form>
 

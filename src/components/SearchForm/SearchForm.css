@@ -127,6 +127,20 @@
     background-color: rgba(66, 133, 244, .8);
 }
 
+.search-form__error-text {
+    margin: 0px;
+    padding: 0px;
+    position: absolute;
+    top: 80px;
+    left: 0px;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 14px;
+    color: #ee3465;
+}
+
 .search-form__label-filter {
     margin: 0;
     padding: 0 30px;

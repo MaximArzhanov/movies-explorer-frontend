@@ -62,12 +62,17 @@
     background-color: rgba(49, 49, 49, .8);
 }
 
+.movies-card__button_delete::after  {
+    content: '';
+}
+
 .movies-card__button_saved::after {
     content: '';
 }
 
 .movie {
     width: 100%;
+    height: 100%;
     margin: 0;
     padding: 0;
     display: grid;
